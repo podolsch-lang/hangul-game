@@ -15,9 +15,74 @@
 <link rel="manifest" href="manifest.json">
 <script>
 // 오프라인 사용: https(또는 localhost)에서 열었을 때만 service worker 등록. file:// 로 열면 그냥 건너뜀
-if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
-  addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
-}
+// 새 sw.js는 HTTP 캐시를 쓰지 않고 확인하고, 새 워커가 맡으면 한 번만 다시 연다.
+// 아이가 글자를 쓰는 중이면 자동으로 끊지 않고, 눌러서 업데이트하게 한다.
+(function () {
+  var APP_VERSION = 'v5 · 2026-10-19';
+  function paintVersion() {
+    var el = document.getElementById('appVer');
+    if (el) el.textContent = APP_VERSION;
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', paintVersion);
+  else paintVersion();
+  if (!('serviceWorker' in navigator) || !/^https?:$/.test(location.protocol)) return;
+  var hadController = !!navigator.serviceWorker.controller;
+  var reloading = false;
+  var suppress = false;
+  try {
+    if (sessionStorage.getItem('hangul_just_reloaded') === '1') {
+      sessionStorage.removeItem('hangul_just_reloaded');
+      suppress = true;
+      setTimeout(function () { suppress = false; }, 4000);
+    }
+  } catch (e) {}
+  function midRound() {
+    var el = document.querySelector('.screen.active');
+    var id = el && el.id;
+    return id === 'fall' || id === 'write' || id === 'practice' || id === 'quiz' || id === 'mix';
+  }
+  function showUpdateBanner() {
+    window.__swUpdateReady = true;
+    var b = document.getElementById('updateBanner');
+    if (b) b.hidden = false;
+  }
+  function reloadForUpdate(force) {
+    if (reloading) return;
+    if (!force && midRound()) { showUpdateBanner(); return; }
+    reloading = true;
+    try { sessionStorage.setItem('hangul_just_reloaded', '1'); } catch (e) {}
+    location.reload();
+  }
+  window.__reloadForUpdate = reloadForUpdate;
+  function onTookOver() {
+    if (!hadController) return;
+    if (suppress && !window.__forceSwReload) return;
+    try {
+      var c = navigator.serviceWorker.controller;
+      if (c) c.postMessage({ type: 'CLIENT_HANDLES_UPDATE' });
+    } catch (e) {}
+    reloadForUpdate(!!window.__forceSwReload);
+  }
+  navigator.serviceWorker.addEventListener('controllerchange', onTookOver);
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    if (!t || !t.closest || !t.closest('#updateBanner')) return;
+    window.__forceSwReload = true;
+    reloadForUpdate(true);
+  });
+  function watch(reg) {
+    window.__swReg = reg;
+    reg.update().catch(function () {});
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible') reg.update().catch(function () {});
+    });
+  }
+  addEventListener('load', function () {
+    navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(watch).catch(function () {
+      navigator.serviceWorker.register('sw.js').then(watch).catch(function () {});
+    });
+  });
+})();
 </script>
 <style>
 :root{--bg1:#ffe3f3;--bg2:#e9d9ff;--card:#fff;--main:#ff7ac6;--main2:#b78cff;--text:#5a2a6e;--ok:#5fd38d;--soft:#fff0fa;--shadow:rgba(183,140,255,.35);--sky1:rgba(255,255,255,.55);--sky2:rgba(255,214,240,.45);
@@ -223,9 +288,15 @@ body.dino .overlay{background:radial-gradient(circle,rgba(255,255,255,.97),rgba(
 .crayon.on{outline:4px solid var(--text)}
 .crayon.eraser{background:#fff;font-size:22px}
 #strictSec .big{margin-left:0}
+#updateBanner{position:fixed;left:50%;top:calc(12px + var(--sat));transform:translateX(-50%);z-index:140;max-width:min(92vw,560px);border:none;border-radius:999px;padding:14px 18px;font:inherit;font-size:clamp(16px,2.6vmin,22px);font-weight:bold;background:#fff3b0;color:var(--text);box-shadow:0 6px 0 var(--shadow);cursor:pointer;text-align:center}
+#updateBanner[hidden]{display:none !important}
+#verSec{text-align:center;opacity:.85}
+#verSec #appVer{font-size:16px;margin:4px 0 8px}
+#verSec .big{margin-left:0}
 </style>
 </head>
 <body class="heart">
+<button type="button" id="updateBanner" hidden>새 버전이 있어요 — 눌러서 업데이트</button>
 <div class="sparkles" id="sparkles"></div>
 
 <!-- 시작 (iOS 소리 잠금 해제) -->
@@ -380,6 +451,10 @@ body.dino .overlay{background:radial-gradient(circle,rgba(255,255,255,.97),rgba(
       <button class="big danger" id="resetProgress" type="button">처음부터 다시 시작 (기록 초기화)</button>
     </div>
     <div class="btnrow"><button class="big white" id="unlockAll">🔓 모든 단계 열기</button><button class="big" id="parentClose">닫기</button></div>
+    <div class="psec" id="verSec">
+      <div id="appVer">v5 · 2026-10-19</div>
+      <button class="big white" id="checkUpdate" type="button">새 버전 확인</button>
+    </div>
   </div>
 </div>
 
@@ -987,6 +1062,27 @@ function longPress(el, ms, fn, hint){ let h=0;
 longPress($('parentBtn'), 1500, openParent, '부모님: 꾹 누르면 설정이 열려요');
 longPress($('gearBtn'), 1500, openParent, '⚙️ 부모님: 꾹 누르면 설정이 열려요');
 $('parentClose').onclick=()=>{ $('parentOv').classList.remove('on'); applyTouchAction(); renderStages(); if(current==='wstages') renderWriteStages(); };
+$('checkUpdate').onclick=async ()=>{
+  window.__forceSwReload = true;
+  const reg = window.__swReg;
+  if (window.__swUpdateReady && window.__reloadForUpdate) { window.__reloadForUpdate(true); return; }
+  if (!reg) { window.__forceSwReload = false; toast('지금 확인할 수 없어요'); return; }
+  toast('확인하고 있어요…');
+  try { await reg.update(); } catch (e) {}
+  const worker = reg.installing || reg.waiting;
+  if (!worker) {
+    if (window.__swUpdateReady && window.__reloadForUpdate) { window.__reloadForUpdate(true); return; }
+    window.__forceSwReload = false;
+    toast('이미 최신이에요');
+    return;
+  }
+  const nudge = () => { try { worker.postMessage({ type: 'SKIP_WAITING' }); } catch (e) {} };
+  if (worker.state === 'installed' || worker.state === 'activating' || worker.state === 'activated') nudge();
+  else worker.addEventListener('statechange', () => {
+    if (worker.state === 'installed' || worker.state === 'activated') nudge();
+  });
+  toast('새 버전을 받고 있어요');
+};
 function resetAllProgress(alsoSettings){
   stopSpeak(); stopFall(); stopWrite();
   stars=0; myStickers=[];
