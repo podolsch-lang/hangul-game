@@ -1,15 +1,17 @@
 // 한글 놀이터 service worker
-// 화면·매니페스트·목소리 목록은 네트워크를 먼저 본다(최대 3초). 안 되면 저장본.
+// 화면·매니페스트·목소리 목록·버전 파일은 네트워크를 먼저 본다(최대 3초). 안 되면 저장본.
 // 그림과 소리 파일은 저장본을 먼저 쓴다. 인터넷이 없어도 이어서 놀 수 있다.
-const CACHE = 'hangul-game-v5';
-const CORE = ['./', './index.html', './manifest.json', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-512-maskable.png', './icons/apple-touch-icon.png', './audio/index.json'];
+// 버전 숫자는 version.js 의 APP_VERSION 한 곳만 고친다.
+importScripts('./version.js');
+const CACHE = 'hangul-game-' + self.APP_VERSION;
+const CORE = ['./', './index.html', './version.js', './manifest.json', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-512-maskable.png', './icons/apple-touch-icon.png', './audio/index.json'];
 const NET_MS = 3000;
 
 function isShell(req) {
   if (req.mode === 'navigate') return true;
   let path = '';
   try { path = new URL(req.url).pathname; } catch (e) { return false; }
-  return /\/(?:index\.html|manifest\.json)$/.test(path) || /\/audio\/index\.json$/.test(path);
+  return /\/(?:index\.html|version\.js|manifest\.json)$/.test(path) || /\/audio\/index\.json$/.test(path);
 }
 
 function offline() {
