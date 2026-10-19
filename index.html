@@ -293,7 +293,7 @@ body.dino .overlay{background:radial-gradient(circle,rgba(255,255,255,.97),rgba(
 </head>
 <body class="heart">
 <button type="button" id="updateBanner" hidden>새 버전이 있어요 — 눌러서 업데이트</button>
-<div id="verTag">v1.1</div>
+<div id="verTag">v1.2</div>
 <div class="sparkles" id="sparkles"></div>
 
 <!-- 시작 (iOS 소리 잠금 해제) -->
@@ -639,8 +639,18 @@ function splitSentences(text){
 }
 let speakTimer = 0, speakGen = 0, recAudio = null;
 function stopSpeak(){ speakGen++; clearTimeout(speakTimer); if(synth) synth.cancel(); if(recAudio){ try{ recAudio.pause(); }catch(e){} recAudio=null; } }
+let lastSay = '', lastSayAt = 0;
+window.__speakLog = window.__speakLog || [];
+// 따라 쓰기 2·3번째(혼자 쓰기)는 목소리 없이 효과음과 반짝임만
+function writeSilent(){ try{ return current==='write' && !W.sheet && selfWrite(); }catch(e){ return false; } }
 function speak(text, opts={}){
-  if(!soundOn) return;
+  if(!soundOn || !text) return;
+  if(writeSilent()) return;
+  const now = Date.now(), key = String(text).trim();
+  if(key === lastSay && now - lastSayAt < 1500) return;   // 같은 말을 연달아 두 번 하지 않음
+  lastSay = key; lastSayAt = now;
+  window.__speakLog.push({text:key, at:now, screen:current, attempt:(current==='write' ? (W.attempt||1) : 0), q:(current==='write' ? W.q : -1)});
+  if(window.__speakLog.length>200) window.__speakLog.shift();
   stopSpeak(); const gen = speakGen;
   const parts = splitSentences(text);
   const delay = opts.delay != null ? opts.delay : (opts.praise ? 250 : 0);   // 칭찬 전에 살짝 쉬기
@@ -658,6 +668,7 @@ function speakSynth(parts, opts){
     if(!koVoice) pickVoice();
     if(!koVoice && synth.getVoices().length) warnVoice('한국어 목소리가 없어요. 부모님 설정(⚙️)을 봐 주세요');
     const rate = vset.rate || 0.88, pitch = Math.min(1.5, (vset.pitch || 1.1) + (opts.praise ? 0.05 : 0));
+    if(synth.speaking || synth.pending) synth.cancel();
     parts.forEach(p=>{
       const u = new SpeechSynthesisUtterance(p);
       u.lang = 'ko-KR'; u.rate = rate; u.pitch = pitch; u.volume = 1;
@@ -1641,6 +1652,7 @@ function syncAttemptChrome(){
   const demo=$('hwDemo'), hint=$('hwHintBtn'), rep=$('hwRep');
   if(demo) demo.hidden=self || !!W.sheet;
   if(hint) hint.hidden=!self || !!W.sheet;
+  ['hwHear','hwListen'].forEach(id=>{ const b=$(id); if(b) b.style.visibility = (self && !W.sheet) ? 'hidden' : ''; });
   if(rep) rep.textContent=repDots();
 }
 function drawCells(ctx){
@@ -1758,12 +1770,13 @@ function failStroke(){
   if(cur>=0 && !selfWrite()) W.ghost={idx:cur, t0:performance.now(), dur:650};
   if(cur>=0 && selfWrite()) W.nudgeUntil=performance.now()+900;
   sfx.boing();
+  const talk=!selfWrite() && !W.failSpoken;   // 첫 번째(따라 쓰기)에서 한 번만 말로 알려 줌
   if(strictOrder){
     const n=(cur<0?1:cur+1);
     const line='순서대로 써 볼까? '+n+'번 획부터!';
-    setMsg(line); speak(line);
+    setMsg(line); if(talk){ W.failSpoken=true; speak(line); }
   } else {
-    setMsg('다시 해볼까?'); speak('다시 해볼까?');
+    setMsg('다시 해볼까?'); if(talk){ W.failSpoken=true; speak('다시 해볼까?'); }
   }
 }
 function finishLetter(){
@@ -1771,7 +1784,8 @@ function finishLetter(){
   W.attemptClean.push(!!clean);
   if(W.attempt < (W.reps||3)){
     const line='이번에는 혼자 써 볼까?';
-    setMsg(line); sfx.chime(2); speak(line);
+    setMsg(line); sfx.chime(2);
+    if(W.attempt===1) speak(line);   // 첫 번째를 마쳤을 때만 한 번 말함
     W.phase='pause';
     const tok=W.token, q=W.q, next=W.attempt+1;
     setTimeout(()=>{ if(tok!==writeToken || W.q!==q) return; W.attempt=next; beginItem(false); }, WRITE_FAST?280:1400);
@@ -1779,18 +1793,19 @@ function finishLetter(){
   }
   const letterClean=W.attemptClean.length>0 && W.attemptClean.every(Boolean);
   const p=rand(PRAISE);
-  if(letterClean){ W.correct++; W.earned++; addStars(1); setMsg(p+' ⭐'); confetti(26); sfx.sparkle(); speak(p,{praise:true, delay:200}); }
-  else { setMsg('잘했어!'); confetti(14); sfx.soft(); speak('잘했어! 조금만 더 하면 할 수 있어!'); }
+  // 세 번째를 마쳐도 목소리 없이 반짝임과 효과음만 (칭찬 목소리는 한 판이 끝날 때)
+  if(letterClean){ W.correct++; W.earned++; addStars(1); setMsg(p+' ⭐'); confetti(26); sfx.sparkle(); }
+  else { setMsg('잘했어!'); confetti(14); sfx.soft(); }
   W.phase='pause';
   const tok=W.token, q=W.q;
   setTimeout(()=>{ if(tok!==writeToken || W.q!==q) return; W.q++; nextItem(); }, WRITE_FAST?280:1650);
 }
 function sayHow(){
-  if(!W.item) return;
+  if(!W.item || selfWrite()) return;
   speak(W.item.name+eunun(W.item.name)+' 이렇게 써요');
 }
 function beginItem(demo){
-  W.ink=[]; W.reject=null; W.ghost=null; W.misses=0; W.hinted=false; W.hintUntil=0; W.nudgeUntil=0;
+  W.ink=[]; W.reject=null; W.ghost=null; W.misses=0; W.hinted=false; W.hintUntil=0; W.nudgeUntil=0; W.failSpoken=false;
   if(W.px && W.px.length) W.done=W.px.map(()=>false);
   if(typeof resetInks==='function') resetInks();
   syncAttemptChrome();
@@ -1802,8 +1817,7 @@ function beginItem(demo){
     sayHow();
   } else if(self){
     W.phase='write'; W.demo=null;
-    const line='이번에는 혼자 써 볼까?';
-    setMsg(line); speak(line);
+    setMsg('이번에는 혼자 써 볼까?');   // 2·3번째는 글로만 (목소리 없음)
   } else {
     W.phase='write'; W.demo=null;
     setMsg('따라 써 봐요!');
@@ -2192,6 +2206,7 @@ window.__hw={
   errs(){ return window.__errs.slice(); },
   audio(){ return { state: actx ? actx.state : '', ctor: !!(window.AudioContext || window.webkitAudioContext) }; },
   attempt(){ return W.attempt||1; },
+  speakLog(){ return (window.__speakLog||[]).slice(); },
   reps(){ return W.reps||3; },
   self(){ return selfWrite(); },
   guided(){ return guideVisible(); },
