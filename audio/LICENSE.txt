@@ -1,0 +1,3 @@
+These audio files were generated offline with MeloTTS (https://github.com/myshell-ai/MeloTTS)
+using the model myshell-ai/MeloTTS-Korean (https://huggingface.co/myshell-ai/MeloTTS-Korean), MIT License.
+Copyright (c) 2024 MyShell.ai. Used only to pre-record the fixed phrases of this game.
