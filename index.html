@@ -288,12 +288,15 @@ body.dino .overlay{background:radial-gradient(circle,rgba(255,255,255,.97),rgba(
 #verSec{text-align:center;opacity:.85}
 #verSec #appVer{font-size:16px;margin:4px 0 8px}
 #verSec .big{margin-left:0}
-#verTag{position:fixed;left:calc(8px + var(--sal));bottom:calc(2px + var(--sab));z-index:30;margin:0;padding:1px 5px;border-radius:7px;background:rgba(255,255,255,.62);color:var(--text);font-size:11px;line-height:1.3;letter-spacing:.02em;opacity:.72;pointer-events:none}
+#verTag,#byTag{position:fixed;bottom:calc(2px + var(--sab));z-index:30;margin:0;padding:1px 5px;border-radius:7px;background:rgba(255,255,255,.62);color:var(--text);font-size:11px;line-height:1.3;letter-spacing:.02em;opacity:.72;pointer-events:none;white-space:nowrap}
+#verTag{left:calc(8px + var(--sal))}
+#byTag{right:calc(8px + var(--sar))}
 </style>
 </head>
 <body class="heart">
 <button type="button" id="updateBanner" hidden>새 버전이 있어요 — 눌러서 업데이트</button>
-<div id="verTag">v1.2</div>
+<div id="verTag">v1.3</div>
+<div id="byTag">by 차차송</div>
 <div class="sparkles" id="sparkles"></div>
 
 <!-- 시작 (iOS 소리 잠금 해제) -->
@@ -449,7 +452,7 @@ body.dino .overlay{background:radial-gradient(circle,rgba(255,255,255,.97),rgba(
     </div>
     <div class="btnrow"><button class="big white" id="unlockAll">🔓 모든 단계 열기</button><button class="big" id="parentClose">닫기</button></div>
     <div class="psec" id="verSec">
-      <div id="appVer">v1.1</div>
+      <div id="appVer">v1.3</div>
       <button class="big white" id="checkUpdate" type="button">새 버전 확인</button>
     </div>
   </div>
