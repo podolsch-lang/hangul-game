@@ -190,6 +190,7 @@ body.dino .overlay{background:radial-gradient(circle,rgba(255,255,255,.97),rgba(
 .iconbtn.small{opacity:.55;font-size:clamp(20px,3vmin,26px);width:clamp(44px,6vmin,54px);height:clamp(44px,6vmin,54px)}
 .pressing{opacity:1!important;background:#fff3b0;border-radius:999px;box-shadow:0 0 0 6px #fff3b0}
 #parentOv{justify-content:flex-start;overflow-y:auto;z-index:95}
+#confirmOv{z-index:98}
 .ppanel{width:100%;max-width:720px;background:#fff;border-radius:30px;padding:18px 18px 10px;box-shadow:0 8px 0 var(--shadow);text-align:left;margin:auto 0}
 .ppanel *{user-select:auto;-webkit-user-select:auto}
 .psec{margin:10px 0;font-size:20px}
@@ -203,11 +204,14 @@ body.dino .overlay{background:radial-gradient(circle,rgba(255,255,255,.97),rgba(
 #wstages .stages{grid-template-columns:1fr 1fr;max-width:920px}
 #wstages .stage{min-height:clamp(120px,26vh,220px)}
 @media (orientation:portrait){#wstages .stages{grid-template-columns:1fr;max-width:640px}}
-#write,#practice{overflow:hidden}
-.hwMain{flex:1;width:100%;max-width:1100px;min-height:0;display:flex;flex-direction:column;align-items:center;gap:6px}
-.hwBoard{flex:1;width:100%;min-height:0;display:flex;align-items:center;justify-content:center;touch-action:none}
+#write,#practice{overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.hwMain{flex:1;width:100%;max-width:1100px;min-height:0;display:flex;flex-direction:column;align-items:center;gap:6px;touch-action:none}
+.hwBoard{flex:1;width:100%;min-height:0;display:flex;align-items:center;justify-content:center;touch-action:none;-webkit-user-select:none;user-select:none}
 .hwFrame{line-height:0;border-radius:28px;border:6px solid #fff;box-shadow:0 8px 0 var(--shadow);background:#fff;touch-action:none}
-.hwCanvas{display:block;background:#fffefb;border-radius:22px;touch-action:none;cursor:crosshair}
+.hwCanvas{display:block;background:#fffefb;border-radius:22px;touch-action:none;cursor:crosshair;-webkit-user-select:none;-webkit-touch-callout:none}
+.big.danger{background:linear-gradient(90deg,#ff5d6c,#ff8a4a);color:#fff}
+#hwHintBtn[hidden],#hwDemo[hidden]{display:none !important}
+#inkDbg{position:fixed;left:8px;bottom:calc(8px + var(--sab));z-index:120;max-width:min(92vw,520px);max-height:28vh;overflow:hidden;background:rgba(20,16,28,.88);color:#d8ffd0;font:12px/1.35 ui-monospace,monospace;padding:8px 10px;border-radius:12px;pointer-events:none;white-space:pre;text-align:left}
 .hwMsg{min-height:1.3em;font-size:clamp(20px,3.4vmin,30px);font-weight:bold;text-align:center;color:var(--main)}
 .strictPill{font-size:clamp(14px,2.2vmin,18px);padding:8px 12px}
 .strictPill.on{background:#fff3b0}
@@ -340,6 +344,15 @@ body.dino .overlay{background:radial-gradient(circle,rgba(255,255,255,.97),rgba(
   <button class="big" id="stkOk" style="position:relative">좋아요! 💖</button>
 </div>
 
+<div class="overlay" id="confirmOv">
+  <div class="ppanel">
+    <h2>기록을 지울까요?</h2>
+    <p class="vhelp">별, 스티커, 단계 기록이 모두 지워져요. 정말 초기화할까요?</p>
+    <label class="vhelp"><input type="checkbox" id="resetSettings"> 설정도 초기화 (목소리, 테마, 소리, 획순, 입력 기록)</label>
+    <div class="btnrow"><button class="big danger" id="resetYes" type="button">지울게요</button><button class="big white" id="resetNo" type="button">아니요</button></div>
+  </div>
+</div>
+
 <!-- 부모님 설정 -->
 <div class="overlay" id="parentOv">
   <div class="ppanel">
@@ -357,6 +370,14 @@ body.dino .overlay{background:radial-gradient(circle,rgba(255,255,255,.97),rgba(
       <b>✏️ 획순 지키기</b>
       <p class="vhelp">켜 두면 지금 차례의 획을, 시작점부터 바른 방향으로 쓸 때만 맞아요. 다른 획을 먼저 쓰거나 거꾸로 쓰면 “순서대로 써 볼까?” 하고 알려 줘요. 끄면 순서가 달라도 그 획의 모양만 맞으면 돼요.</p>
       <button class="big" id="strictBtn" type="button">획순 지키기: 켜짐</button>
+    </div>
+    <div class="psec" id="debugSec">
+      <b>🖊️ 입력 기록</b>
+      <p class="vhelp">아이패드에서 애플 펜슬이 안 될 때 켜 두세요. 화면에 펜이 보낸 이벤트 종류가 보여요. 평소에는 꺼 두세요.</p>
+      <button class="big white" id="debugBtn" type="button">입력 기록: 꺼짐</button>
+    </div>
+    <div class="psec" id="resetSec">
+      <button class="big danger" id="resetProgress" type="button">처음부터 다시 시작 (기록 초기화)</button>
     </div>
     <div class="btnrow"><button class="big white" id="unlockAll">🔓 모든 단계 열기</button><button class="big" id="parentClose">닫기</button></div>
   </div>
@@ -380,7 +401,8 @@ body.dino .overlay{background:radial-gradient(circle,rgba(255,255,255,.97),rgba(
 <section class="screen" id="write">
   <div class="topbar">
     <button class="iconbtn back" aria-label="뒤로">🏠</button>
-    <span class="pill"><span id="hwNum">1</span> / 10</span>
+    <span class="pill"><span id="hwNum">1</span> / <span id="hwTotal">7</span></span>
+    <span class="pill" id="hwRep">✏️●○○</span>
     <span class="pill strictPill on" data-strict-pill>획순 켜짐</span>
     <span class="pill">⭐ <span class="starCount">0</span></span>
   </div>
@@ -395,6 +417,7 @@ body.dino .overlay{background:radial-gradient(circle,rgba(255,255,255,.97),rgba(
     <div class="btnrow">
       <button class="big white" id="hwClear" type="button">다시 쓰기</button>
       <button class="big white" id="hwDemo" type="button">시범 다시 보기</button>
+      <button class="big white" id="hwHintBtn" type="button" hidden>힌트</button>
       <button class="big white" id="hwHear" type="button">🔊 듣기</button>
     </div>
   </div>
@@ -421,6 +444,7 @@ body.dino .overlay{background:radial-gradient(circle,rgba(255,255,255,.97),rgba(
 </section>
 
 <div class="toast" id="toast"></div>
+<div id="inkDbg" hidden></div>
 
 <script id="hangulData">
 // ===== 낱말 데이터 =====
@@ -581,7 +605,7 @@ function warnVoice(msg){ if(voiceWarned) return; voiceWarned = true; toast('🔇
 function toast(msg, ms=2000){ const t=$('toast'); t.textContent=msg; t.style.display='block'; clearTimeout(t._h); t._h=setTimeout(()=>t.style.display='none', ms); }
 
 // ===== 부모님 설정 =====
-function openParent(){ renderVoicePanel(); syncStrictUi(); $('parentOv').classList.add('on'); }
+function openParent(){ renderVoicePanel(); syncStrictUi(); syncDebugUi(); $('parentOv').classList.add('on'); applyTouchAction(); }
 function renderVoicePanel(){
   const box = $('voiceList'); if(!box) return; box.innerHTML='';
   const add = (uri, label, sub) => {
@@ -640,11 +664,18 @@ const sfx = {
 
 // ===== 화면/테마 =====
 let current = 'home';
+function applyTouchAction(){
+  const parentOn=$('parentOv') && $('parentOv').classList.contains('on');
+  const confirmOn=$('confirmOv') && $('confirmOv').classList.contains('on');
+  const writing=(current==='write' || current==='practice') && !parentOn && !confirmOn;
+  document.body.style.touchAction = writing ? 'none' : 'manipulation';
+}
 function show(id){
   if(id!=='fall') stopFall();
   if(id!=='write' && id!=='practice') stopWrite();
   current = id;
   document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active', s.id===id));
+  applyTouchAction();
   if(id==='stages') renderStages();
   if(id==='wstages') renderWriteStages();
   if(id==='book') renderBook();
@@ -876,6 +907,14 @@ function timeoutFall(){
   setTimeout(()=>{ if(tok===F.token){ F.q++; nextFall(); } }, 2800);
 }
 function rating(c){ return c>=10?3 : c>=8?2 : c>=CLEAR_AT?1 : 0; }
+function ratingRatio(c, total){
+  if(total<=0) return 0;
+  const r=c/total;
+  if(r>=0.99) return 3;
+  if(r>=0.8) return 2;
+  if(r+1e-9>=0.7) return 1;
+  return 0;
+}
 let resultKind = 'fall';
 function fallFinish(){
   F.running=false;
@@ -884,16 +923,17 @@ function fallFinish(){
   if(cleared){ const k=String(F.key); prog.best[k]=Math.max(prog.best[k]||0,r); if(lv<3) prog.unlocked=Math.max(prog.unlocked,lv+1); saveProg(); }
   showResult(lv, c, r, F.earned, F.best);
 }
-function showResult(lv, c, r, earned, best){
+function showResult(lv, c, r, earned, best, info){
   show('fres');
   const cleared=r>0;
   $('rMedal').textContent = cleared ? (r===3?'👑':r===2?'🏅':'🎖️') : (theme==='dino'?'🦕':'🧚');
   $('rTitle').textContent = cleared ? lv+'단계 성공!' : '조금만 더 해볼까?';
-  $('rInfo').innerHTML = '10개 중 '+c+'개 맞혔어요!<br>⭐ +'+earned+(best>=3?' · 최고 '+best+'연속!':'');
+  $('rInfo').innerHTML = info || ('10개 중 '+c+'개 맞혔어요!<br>⭐ +'+earned+(best>=3?' · 최고 '+best+'연속!':''));
   const spans=$('rRate').querySelectorAll('span'); spans.forEach(s=>s.classList.remove('on'));
   $('rRate').style.display = cleared ? '' : 'none';
   spans.forEach((s,i)=>{ if(i<r) setTimeout(()=>{ s.classList.add('on'); sfx.pop(); }, 500+i*450); });
   const maxLv = resultKind==='write' ? 4 : 3;
+  $('rNext').textContent = '다음 단계 ▶';
   $('rNext').style.display = (cleared && lv<maxLv) ? '' : 'none';
   $('rAgain').textContent = cleared ? '🔁 또 하기' : '🔁 다시 하기';
   if(cleared){
@@ -917,8 +957,11 @@ function revealSticker(){
   speak((isNew?'새 스티커를 얻었어요! ':'')+s[1]+'!',{praise:true});
 }
 $('stkOk').onclick=()=>{ $('stkOv').classList.remove('on'); sfx.pop(); };
-$('rNext').onclick=()=>{ if(resultKind==='write') startWrite(String(W.level+1)); else startFall(String(F.level+1)); };
-$('rAgain').onclick=()=>{ if(resultKind==='write') startWrite(W.key); else startFall(F.key); };
+$('rNext').onclick=()=>{
+  if(resultKind==='write'){ if(W.more) startWrite(String(W.level)); else startWrite(String(W.level+1)); }
+  else startFall(String(F.level+1));
+};
+$('rAgain').onclick=()=>{ if(resultKind==='write') startWrite(W.key, {replay:W.roundStart}); else startFall(F.key); };
 $('fhead').onclick=sayTarget;
 
 // ===== 단계 고르기 =====
@@ -943,7 +986,32 @@ function longPress(el, ms, fn, hint){ let h=0;
   el.addEventListener('click', ()=>{ if(el._lp){ el._lp=false; return; } toast(hint); }); }
 longPress($('parentBtn'), 1500, openParent, '부모님: 꾹 누르면 설정이 열려요');
 longPress($('gearBtn'), 1500, openParent, '⚙️ 부모님: 꾹 누르면 설정이 열려요');
-$('parentClose').onclick=()=>{ $('parentOv').classList.remove('on'); renderStages(); if(current==='wstages') renderWriteStages(); };
+$('parentClose').onclick=()=>{ $('parentOv').classList.remove('on'); applyTouchAction(); renderStages(); if(current==='wstages') renderWriteStages(); };
+function resetAllProgress(alsoSettings){
+  stopSpeak(); stopFall(); stopWrite();
+  stars=0; myStickers=[];
+  prog={unlocked:1, best:{}, all:false, write:{unlocked:1, best:{}, cursor:{}}};
+  saveProg(); store.set('stars', 0);
+  F.streak=0; F.best=0; F.running=false; F.correct=0;
+  if(alsoSettings){
+    setTheme('heart');
+    soundOn=true; store.set('sound', true); if($('soundBtn')) $('soundBtn').textContent='🔊';
+    vset={uri:'auto', rate:0.88, pitch:1.1}; store.set('voice', vset); pickVoice();
+    setStrict(true);
+    setInkDebug(false);
+  }
+  updateStars(); renderStages(); renderWriteStages();
+  if($('bookGrid')) renderBook();
+  $('parentOv').classList.remove('on');
+  $('confirmOv').classList.remove('on');
+  const box=$('resetSettings'); if(box) box.checked=false;
+  show('home');
+  applyTouchAction();
+  toast('초기화했어요');
+}
+$('resetProgress').onclick=()=>{ sfx.pop(); $('confirmOv').classList.add('on'); applyTouchAction(); };
+$('resetNo').onclick=()=>{ $('confirmOv').classList.remove('on'); applyTouchAction(); sfx.pop(); };
+$('resetYes').onclick=()=>{ resetAllProgress(!!($('resetSettings') && $('resetSettings').checked)); sfx.soft(); };
 $('voiceTest').onclick=()=>speak('안녕! 같이 한글 놀이 하자! 기역을 찾아봐! 우와, 잘했어요!');
 $('rateR').oninput=e=>{ vset.rate=+e.target.value; store.set('voice',vset); $('rateV').textContent=vset.rate.toFixed(2); };
 $('pitchR').oninput=e=>{ vset.pitch=+e.target.value; store.set('voice',vset); $('pitchV').textContent=vset.pitch.toFixed(2); };
@@ -1006,21 +1074,22 @@ updateStars(); setTheme(theme); loadRecorded();
 // ㄱ1 ㄴ1 ㄷ2 ㄹ3 ㅁ3 ㅂ4 ㅅ2 ㅇ1 ㅈ2 ㅊ3 ㅋ2 ㅌ3 ㅍ4 ㅎ3
 // ㅏ는 ㅣ 다음 짧은 가로. ㅓ·ㅕ는 짧은 가로가 먼저. ㅗ·ㅛ는 짧은 세로가 먼저. ㅜ·ㅠ는 긴 가로가 먼저.
 let strictOrder = store.get('strict', true) !== false;
+let inkDebugOn = store.get('inkdebug', false) === true;
 let writeToken = 0, writeRaf = 0, writeLoopOn = false, WRITE_FAST = false;
 const activePens = new Set();
-let penCool = 0;
-const W = { key:'1', level:1, list:[], q:0, correct:0, earned:0, misses:0, item:null, px:[], done:[], ink:[], reject:null, ghost:null, phase:'write', pointer:null, layout:null, token:0, sheet:false, last:null, layoutTries:0 };
+let penCool = 0, stylusTouches = 0;
+const inkLog = [];
+const W = { key:'1', level:1, list:[], q:0, correct:0, earned:0, misses:0, item:null, px:[], done:[], ink:[], reject:null, ghost:null, phase:'write', layout:null, token:0, sheet:false, last:null, layoutTries:0, attempt:1, reps:3, attemptClean:[], hinted:false, hintUntil:0, nudgeUntil:0, roundStart:0, more:false };
 const VERT_V = new Set(['ㅏ','ㅑ','ㅓ','ㅕ','ㅣ']);
-const BOX_V = { cho:{x:4,y:10,w:54,h:78}, jung:{x:56,y:6,w:40,h:88} };
-const BOX_H = { cho:{x:14,y:2,w:72,h:50}, jung:{x:6,y:46,w:88,h:50} };
 const JUNG_OF = {ㅏ:0,ㅑ:2,ㅓ:4,ㅕ:6,ㅗ:8,ㅛ:12,ㅜ:13,ㅠ:17,ㅡ:18,ㅣ:20};
-const WRITE_WORDS = [['🦋','나비'],['🥛','우유'],['🦁','사자'],['👶','아기'],['🦆','오리'],['🧢','모자'],['🌳','나무'],['🥒','오이'],['👖','바지'],['🍇','포도'],['🚂','기차'],['🕷️','거미'],['🦊','여우'],['🍕','피자'],['🧀','치즈'],['🦛','하마']];
+const WRITE_WORDS = [['🦋','나비'],['👶','아기'],['🧢','모자'],['🌳','나무'],['🦆','오리'],['🥒','오이'],['🥛','우유'],['🦁','사자'],['👖','바지'],['🍇','포도'],['🚂','기차'],['🕷️','거미'],['🦊','여우'],['🍕','피자'],['🧀','치즈'],['🦛','하마']];
 const WORD_EMOJI = {}; WRITE_WORDS.forEach(w=>WORD_EMOJI[w[1]]=w[0]);
 const CRAYONS = ['#ff5eac','#b06bff','#ff9a2e','#3db7ff','#3cbe6e','#ffd23a','#5a2a6e'];
 const INK = ['#ff5eac','#9a6bff','#ff8a3d','#3db7ff','#3cbe6e','#ffd23a'];
 const P = { ch:'ㄱ', color:CRAYONS[0], erase:false, strokes:[], ink:null, pointer:null, layout:null };
 
 function circlePts(cx,cy,r,n){
+  n=n||40;
   const p=[];
   for(let i=0;i<=n;i++){
     const th=Math.PI/2+(i/n)*Math.PI*2;
@@ -1028,39 +1097,89 @@ function circlePts(cx,cy,r,n){
   }
   return p;
 }
-const RAW = {
-  'ㄱ':[[[18,30],[78,28],[70,82]]],
-  'ㄴ':[[[30,16],[30,74],[84,74]]],
-  'ㄷ':[[[14,20],[84,20]],[[14,20],[14,80],[84,80]]],
-  'ㄹ':[[[14,14],[80,14],[80,40]],[[18,40],[80,40]],[[18,40],[18,84],[84,84]]],
-  'ㅁ':[[[18,14],[18,84]],[[18,16],[82,16],[82,80]],[[18,80],[82,80]]],
-  'ㅂ':[[[26,10],[26,88]],[[74,10],[74,88]],[[26,48],[74,48]],[[26,82],[74,82]]],
-  'ㅅ':[[[60,14],[28,86]],[[48,46],[86,76]]],
-  'ㅇ':[circlePts(50,50,34,22)],
-  'ㅈ':[[[14,26],[74,26],[34,86]],[[52,54],[88,76]]],
-  'ㅊ':[[[30,10],[70,10]],[[14,30],[74,30],[34,88]],[[52,56],[88,78]]],
-  'ㅋ':[[[16,22],[82,22],[74,84]],[[24,50],[78,50]]],
-  'ㅌ':[[[14,16],[86,16]],[[14,46],[80,46]],[[14,16],[14,84],[86,84]]],
-  'ㅍ':[[[14,22],[86,22]],[[32,22],[32,78]],[[68,22],[68,78]],[[14,78],[86,78]]],
-  'ㅎ':[[[28,12],[72,12]],[[16,30],[84,30]],circlePts(50,66,24,22)],
-  'ㅏ':[[[34,8],[34,92]],[[34,48],[80,48]]],
-  'ㅑ':[[[32,8],[32,92]],[[32,34],[80,34]],[[32,64],[80,64]]],
-  'ㅓ':[[[16,46],[62,46]],[[68,8],[68,92]]],
-  'ㅕ':[[[12,32],[58,32]],[[12,64],[58,64]],[[66,8],[66,92]]],
-  'ㅗ':[[[50,6],[50,46]],[[12,54],[88,54]]],
-  'ㅛ':[[[34,4],[34,44]],[[66,4],[66,44]],[[10,54],[90,54]]],
-  'ㅜ':[[[10,32],[90,32]],[[50,32],[50,82]]],
-  'ㅠ':[[[10,26],[90,26]],[[34,26],[34,80]],[[66,26],[66,80]]],
-  'ㅡ':[[[10,50],[90,50]]],
-  'ㅣ':[[[50,8],[50,92]]]
+// 교과서 정자. 가로·세로는 곧게, ㄱ·ㅋ의 내리긋기만 살짝 왼쪽으로 기운다. 좌표는 0–100, y는 아래.
+const ISO = {
+  'ㄱ':[[[18,32],[80,32],[70,80]]],
+  'ㄴ':[[[28,16],[28,74],[82,74]]],
+  'ㄷ':[[[16,20],[84,20]],[[16,20],[16,80],[84,80]]],
+  'ㄹ':[[[16,14],[76,14],[76,38]],[[28,38],[76,38]],[[28,38],[28,84],[84,84]]],
+  'ㅁ':[[[20,16],[20,84]],[[20,16],[80,16],[80,78]],[[20,78],[80,78]]],
+  'ㅂ':[[[28,12],[28,88]],[[72,12],[72,88]],[[28,46],[72,46]],[[28,74],[72,74]]],
+  'ㅅ':[[[52,18],[24,84]],[[40,46],[78,84]]],
+  'ㅇ':[circlePts(50,50,32,40)],
+  'ㅈ':[[[16,28],[72,28],[34,84]],[[55,53],[90,82]]],
+  'ㅊ':[[[32,12],[68,12]],[[16,30],[74,30],[36,86]],[[56,56],[92,82]]],
+  'ㅋ':[[[18,24],[80,24],[70,82]],[[30,50],[76,50]]],
+  'ㅌ':[[[16,18],[84,18]],[[16,46],[78,46]],[[16,18],[16,82],[84,82]]],
+  'ㅍ':[[[16,22],[84,22]],[[32,22],[32,78]],[[68,22],[68,78]],[[16,78],[84,78]]],
+  'ㅎ':[[[30,14],[70,14]],[[16,30],[84,30]],circlePts(50,64,22,40)],
+  'ㅏ':[[[40,12],[40,88]],[[40,50],[78,50]]],
+  'ㅑ':[[[38,12],[38,88]],[[38,36],[76,36]],[[38,64],[76,64]]],
+  'ㅓ':[[[18,48],[58,48]],[[66,12],[66,88]]],
+  'ㅕ':[[[16,34],[56,34]],[[16,62],[56,62]],[[64,12],[64,88]]],
+  'ㅗ':[[[50,16],[50,46]],[[14,56],[86,56]]],
+  'ㅛ':[[[36,14],[36,44]],[[64,14],[64,44]],[[12,56],[88,56]]],
+  'ㅜ':[[[12,34],[88,34]],[[50,34],[50,80]]],
+  'ㅠ':[[[12,30],[88,30]],[[36,30],[36,78]],[[64,30],[64,78]]],
+  'ㅡ':[[[14,50],[86,50]]],
+  'ㅣ':[[[50,12],[50,88]]]
+};
+// 세로모음 글자(가·나·어)의 자음. 칸 전체 좌표. ㄱ은 좁고 삐침이 있다.
+const SIDE = {
+  'ㄱ':[[[12,28],[46,28],[26,68]]],
+  'ㄴ':[[[16,16],[16,78],[44,78]]],
+  'ㄷ':[[[12,16],[46,16]],[[12,16],[12,80],[46,80]]],
+  'ㄹ':[[[12,12],[42,12],[42,34]],[[16,36],[42,36]],[[20,38],[20,82],[46,82]]],
+  'ㅁ':[[[14,14],[14,84]],[[14,14],[44,14],[44,70]],[[14,76],[44,76]]],
+  'ㅂ':[[[18,10],[18,88]],[[40,10],[40,88]],[[18,46],[40,46]],[[18,74],[40,74]]],
+  'ㅅ':[[[34,14],[16,82]],[[27,41],[46,78]]],
+  'ㅇ':[circlePts(30,48,16,40)],
+  'ㅈ':[[[12,26],[42,26],[22,82]],[[34,50],[48,78]]],
+  'ㅊ':[[[22,10],[40,10]],[[10,24],[44,24],[24,84]],[[36,49],[50,80]]],
+  'ㅋ':[[[12,22],[46,22],[28,72]],[[18,46],[38,46]]],
+  'ㅌ':[[[12,14],[46,14]],[[14,42],[42,42]],[[12,14],[12,80],[46,80]]],
+  'ㅍ':[[[12,16],[46,16]],[[20,16],[20,70]],[[38,16],[38,70]],[[12,74],[46,74]]],
+  'ㅎ':[[[20,8],[40,8]],[[10,22],[48,22]],circlePts(29,56,18,40)]
+};
+const VSIDE = {
+  'ㅏ':[[[74,10],[74,90]],[[74,48],[94,48]]],
+  'ㅑ':[[[74,10],[74,90]],[[74,34],[94,34]],[[74,62],[94,62]]],
+  'ㅓ':[[[50,42],[68,42]],[[76,10],[76,90]]],
+  'ㅕ':[[[48,32],[68,32]],[[48,58],[68,58]],[[76,10],[76,90]]],
+  'ㅣ':[[[78,10],[78,90]]]
+};
+// 가로모음 글자(고·구). 자음은 위, 모음은 아래.
+const TOP = {
+  'ㄱ':[[[20,12],[78,12],[64,40]]],
+  'ㄴ':[[[28,8],[28,36],[74,36]]],
+  'ㄷ':[[[18,8],[80,8]],[[18,8],[18,38],[80,38]]],
+  'ㄹ':[[[16,6],[74,6],[74,18]],[[22,20],[74,20]],[[26,22],[26,40],[80,40]]],
+  'ㅁ':[[[22,6],[22,40]],[[22,6],[76,6],[76,32]],[[22,36],[76,36]]],
+  'ㅂ':[[[30,4],[30,42]],[[70,4],[70,42]],[[30,20],[70,20]],[[30,34],[70,34]]],
+  'ㅅ':[[[52,6],[30,40]],[[43,20],[74,38]]],
+  'ㅇ':[circlePts(50,22,16,40)],
+  'ㅈ':[[[18,10],[70,10],[36,40]],[[55,24],[82,40]]],
+  'ㅊ':[[[32,4],[64,4]],[[16,14],[72,14],[38,42]],[[56,26],[84,42]]],
+  'ㅋ':[[[18,8],[80,8],[66,40]],[[28,24],[73,24]]],
+  'ㅌ':[[[16,6],[82,6]],[[20,20],[76,20]],[[16,6],[16,40],[82,40]]],
+  'ㅍ':[[[16,6],[84,6]],[[32,6],[32,32]],[[68,6],[68,32]],[[16,36],[84,36]]],
+  'ㅎ':[[[32,4],[68,4]],[[18,14],[82,14]],circlePts(50,34,12,40)]
+};
+const VTOP = {
+  'ㅗ':[[[50,50],[50,68]],[[14,76],[86,76]]],
+  'ㅛ':[[[36,48],[36,66]],[[64,48],[64,66]],[[12,76],[88,76]]],
+  'ㅜ':[[[14,54],[86,54]],[[50,54],[50,88]]],
+  'ㅠ':[[[14,52],[86,52]],[[36,52],[36,86]],[[64,52],[64,86]]],
+  'ㅡ':[[[14,72],[86,72]]]
 };
 const JAMO_NAME = {};
 CONS.forEach(c=>JAMO_NAME[c[0]]=c[2]);
 VOWS10.forEach(v=>JAMO_NAME[v[0]]=v[1]);
 function eunun(w){ return lastBatchim(w) ? '은' : '는'; }
 function writeProg(){
-  if(!prog.write || typeof prog.write!=='object') prog.write={unlocked:1, best:{}};
+  if(!prog.write || typeof prog.write!=='object') prog.write={unlocked:1, best:{}, cursor:{}};
   if(!prog.write.best) prog.write.best={};
+  if(!prog.write.cursor) prog.write.cursor={};
   if(!prog.write.unlocked) prog.write.unlocked=1;
   return prog.write;
 }
@@ -1078,8 +1197,34 @@ function setStrict(v){
   if(!DEMO) store.set('strict', strictOrder);
   syncStrictUi();
 }
+function syncDebugUi(){
+  const b=$('debugBtn');
+  if(b) b.textContent = inkDebugOn ? '입력 기록: 켜짐' : '입력 기록: 꺼짐';
+  const el=$('inkDbg');
+  if(!el) return;
+  el.hidden=!inkDebugOn;
+  if(inkDebugOn) el.textContent = inkLog.length ? inkLog.join('\n') : '입력을 기다릴게요';
+}
+function setInkDebug(v){
+  inkDebugOn=!!v;
+  if(!DEMO) store.set('inkdebug', inkDebugOn);
+  syncDebugUi();
+}
+function logInk(e, src){
+  const touches=e.touches && e.touches.length ? e.touches : (e.changedTouches||[]);
+  const t=touches[0];
+  const tt=t && t.touchType ? t.touchType : '';
+  const id=(e.target && (e.target.id || e.target.tagName)) || '';
+  const x=Math.round((e.clientX!=null ? e.clientX : (t && t.clientX) || 0));
+  const y=Math.round((e.clientY!=null ? e.clientY : (t && t.clientY) || 0));
+  const line=src+' '+e.type+' '+(e.pointerType||'')+(tt?(' touch:'+tt):'')+' id='+(e.pointerId!=null?e.pointerId:(t?t.identifier:''))+' btn='+(e.buttons!=null?e.buttons:'')+' @'+id+' '+x+','+y;
+  inkLog.push(line);
+  if(inkLog.length>8) inkLog.shift();
+  if(inkDebugOn) syncDebugUi();
+}
 function isWriteUnlocked(lv){ return prog.all || lv<=writeProg().unlocked; }
 function renderWriteStages(){
+  const base={1:'ㄱ ㄴ ㄷ · ㅎ',2:'ㅏ ㅑ ㅓ · ㅣ',3:'가 나 다 · 하',4:'🦋 나비 · 🥛 우유'};
   document.querySelectorAll('#wstages .wstage').forEach(st=>{
     st.classList.toggle('locked', !isWriteUnlocked(+st.dataset.wlevel));
   });
@@ -1087,13 +1232,22 @@ function renderWriteStages(){
     const best=writeProg().best[e.dataset.wrate]||0;
     e.textContent = best ? '⭐'.repeat(best)+'☆'.repeat(3-best) : '☆☆☆';
   });
+  document.querySelectorAll('#wstages .sex').forEach((e,i)=>{
+    const lv=i+1;
+    const list=stageList(lv);
+    const at=+((writeProg().cursor||{})[String(lv)]||0);
+    const pos=at>0 && at<list.length ? at : 0;
+    e.textContent = pos ? base[lv]+' · '+(pos+1)+'번째부터' : base[lv];
+  });
 }
+let resetInks = function(){};
 function stopWrite(){
   writeToken++;
   writeLoopOn=false;
   cancelAnimationFrame(writeRaf);
-  W.pointer=null;
-  P.pointer=null;
+  W.ink=[];
+  P.ink=null;
+  resetInks();
 }
 function ensureLoop(){
   if(writeLoopOn) return;
@@ -1167,15 +1321,43 @@ function judgeOne(drawn, exp){
   return {ok:true, cover, reason:'ok'};
 }
 function currentIndex(){ for(let i=0;i<W.done.length;i++) if(!W.done[i]) return i; return -1; }
+function centroid(pts){ let x=0,y=0; pts.forEach(p=>{ x+=p[0]; y+=p[1]; }); return [x/pts.length, y/pts.length]; }
+function judgeFree(drawn, exp){
+  if(!drawn || drawn.length<2) return {ok:false, reason:'short'};
+  const cell=exp.cellSize||200;
+  const es=resample(exp.pts, 20), ds=resample(drawn, 20);
+  const ec=centroid(es), dc=centroid(ds);
+  const pos=Math.hypot(ec[0]-dc[0], ec[1]-dc[1]);
+  if(pos>cell*0.28) return {ok:false, reason:'pos', pos};
+  const expL=polyLen(exp.pts), drawL=polyLen(drawn);
+  if(drawL<Math.max(18, expL*0.4)) return {ok:false, reason:'short', drawL, expL};
+  if(drawL>expL*2.6+cell*0.35) return {ok:false, reason:'wild'};
+  const norm=pts=>{
+    const c=centroid(pts); let ss=0;
+    const v=pts.map(p=>{ const x=p[0]-c[0], y=p[1]-c[1]; ss+=x*x+y*y; return [x,y]; });
+    const rms=Math.sqrt(ss/pts.length)||1;
+    return v.map(p=>[p[0]/rms, p[1]/rms]);
+  };
+  const en=norm(es), dn=norm(ds);
+  let dist=0;
+  for(let i=0;i<en.length;i++) dist+=Math.hypot(en[i][0]-dn[i][0], en[i][1]-dn[i][1]);
+  dist/=en.length;
+  if(dist>0.72) return {ok:false, reason:'shape', dist};
+  const i0=meanMatch(dn.slice(0,5), en), i1=meanMatch(dn.slice(-5), en);
+  if(i1<i0+en.length*0.16) return {ok:false, reason:'back', i0, i1};
+  return {ok:true, cover:1-dist, reason:'ok'};
+}
 function judgeInk(drawn){
   const idxs = strictOrder ? [currentIndex()] : W.px.map((_,i)=>i).filter(i=>!W.done[i]);
+  const judge = selfWrite() ? judgeFree : judgeOne;
   let best=null;
   idxs.forEach(i=>{
     if(i<0) return;
-    const r=judgeOne(drawn, W.px[i]);
+    const r=judge(drawn, W.px[i]);
     if(r.ok && (!best || r.cover>best.cover)) best=Object.assign({index:i}, r);
   });
-  return best || {ok:false, reason:(idxs.length? judgeOne(drawn, W.px[idxs[0]]).reason : 'none'), index: idxs[0]};
+  const fallback=idxs.length && idxs[0]>=0 ? W.px[idxs[0]] : null;
+  return best || {ok:false, reason: fallback ? judge(drawn, fallback).reason : 'none', index: idxs[0]};
 }
 function mapStrokes(strokes, box){
   return strokes.map(pts=>({
@@ -1192,20 +1374,25 @@ function splitSyl(ch){
   const CHO='ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
   const JUNG='ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ';
   const a=CHO[cho], b=JUNG[jung];
-  if(!RAW[a] || !RAW[b]) return null;
+  if(!ISO[a] || !ISO[b]) return null;
   return {a,b};
 }
+function strokesOf(ptsList){
+  return ptsList.map(pts=>({pts:pts.map(p=>p.slice()), jbox:{x:0,y:0,w:100,h:100}}));
+}
 function cellForJamo(ch){
-  return {ch, strokes: mapStrokes(RAW[ch], {x:10,y:8,w:80,h:84})};
+  return {ch, strokes: mapStrokes(ISO[ch], {x:12,y:12,w:76,h:76})};
 }
 function cellForSyllable(ch){
   const sp=splitSyl(ch); if(!sp) return null;
-  const boxes = VERT_V.has(sp.b) ? BOX_V : BOX_H;
-  return {ch, strokes: mapStrokes(RAW[sp.a], boxes.cho).concat(mapStrokes(RAW[sp.b], boxes.jung))};
+  const cons = VERT_V.has(sp.b) ? SIDE[sp.a] : TOP[sp.a];
+  const vow = VERT_V.has(sp.b) ? VSIDE[sp.b] : VTOP[sp.b];
+  if(!cons || !vow) return null;
+  return {ch, strokes: strokesOf(cons.concat(vow))};
 }
 function makeItem(ch){
   ch=String(ch);
-  if(RAW[ch]){
+  if(ISO[ch]){
     const name=JAMO_NAME[ch]||ch;
     return {show:ch, say:name, name, emoji:'', cells:[cellForJamo(ch)]};
   }
@@ -1214,16 +1401,24 @@ function makeItem(ch){
   if(chars.length>1 && chars.every(c=>!!splitSyl(c))) return {show:ch, say:ch, name:ch, emoji:WORD_EMOJI[ch]||'', cells:chars.map(cellForSyllable)};
   return null;
 }
-function basicSyllables(){
-  const out=[];
-  CONS.forEach(c=>Object.keys(JUNG_OF).forEach(v=>out.push(compose(c[1], JUNG_OF[v]))));
-  return out;
-}
-function writePool(key){
-  if(key==='1') return CONS.map(c=>c[0]);
-  if(key==='2') return VOWS10.map(v=>v[0]);
-  if(key==='3') return basicSyllables();
+function stageList(level){
+  level=+level;
+  if(level===1) return CONS.map(c=>c[0]);
+  if(level===2) return VOWS10.map(v=>v[0]);
+  if(level===3){
+    const vowels=['ㅏ','ㅑ','ㅓ','ㅕ','ㅗ','ㅛ','ㅜ','ㅠ','ㅡ','ㅣ'];
+    const out=[];
+    vowels.forEach(v=>CONS.forEach(c=>out.push(compose(c[1], JUNG_OF[v]))));
+    return out;
+  }
   return WRITE_WORDS.map(w=>w[1]);
+}
+function takeRound(level, from){
+  const list=stageList(level);
+  let i = from==null ? (+((writeProg().cursor||{})[String(level)]||0)) : from;
+  if(!(i>=0) || i>=list.length) i=0;
+  const n=Math.min(7, list.length-i);
+  return {list:list.slice(i, i+n), start:i, total:list.length};
 }
 function hashParam(name){
   const h=location.hash.replace('#','').split(',');
@@ -1323,6 +1518,25 @@ function drawStartDot(ctx, pt, n, hot){
   ctx.textAlign='center'; ctx.textBaseline='middle';
   ctx.fillText(String(n), pt[0], pt[1]+1);
 }
+function selfWrite(){ return (W.attempt||1)>1; }
+function guideVisible(){
+  if(W.phase==='demo') return true;
+  if(!selfWrite()) return true;
+  return performance.now()<(W.hintUntil||0);
+}
+function repDots(){
+  const n=W.reps||3, a=W.attempt||1;
+  let s='✏️';
+  for(let i=1;i<=n;i++) s+= i<=a ? '●' : '○';
+  return s;
+}
+function syncAttemptChrome(){
+  const self=selfWrite();
+  const demo=$('hwDemo'), hint=$('hwHintBtn'), rep=$('hwRep');
+  if(demo) demo.hidden=self || !!W.sheet;
+  if(hint) hint.hidden=!self || !!W.sheet;
+  if(rep) rep.textContent=repDots();
+}
 function drawCells(ctx){
   if(!W.layout) return;
   const L=W.layout, dino=document.body.classList.contains('dino');
@@ -1331,6 +1545,20 @@ function drawCells(ctx){
     roundBox(ctx, x+2, y+2, L.cell-4, L.cell-4, 22);
     ctx.fillStyle=dino?'rgba(236,255,242,.95)':'rgba(255,244,250,.95)'; ctx.fill();
   }
+  if(!selfWrite()) return;
+  ctx.save();
+  ctx.strokeStyle='rgba(186,150,176,.6)';
+  ctx.lineWidth=1.5;
+  ctx.setLineDash([6,7]);
+  for(let i=0;i<L.n;i++){
+    const x=L.ox+i*(L.cell+L.gap), y=L.oy, s=L.cell;
+    ctx.strokeRect(x+12, y+12, s-24, s-24);
+    ctx.beginPath();
+    ctx.moveTo(x+s/2, y+16); ctx.lineTo(x+s/2, y+s-16);
+    ctx.moveTo(x+16, y+s/2); ctx.lineTo(x+s-16, y+s/2);
+    ctx.stroke();
+  }
+  ctx.restore();
 }
 function roundBox(ctx,x,y,w,h,r){
   ctx.beginPath();
@@ -1346,11 +1574,14 @@ function drawLesson(){
   ctx.clearRect(0,0,L.w,L.h);
   ctx.fillStyle='#fffefb'; ctx.fillRect(0,0,L.w,L.h);
   drawCells(ctx);
-  const lw=Math.max(9, L.cell*0.07);
+  const lw=Math.max(10, L.cell*0.062);
   const cur=currentIndex();
   const now=performance.now();
+  const showG=guideVisible();
+  const nudge=selfWrite() && now<(W.nudgeUntil||0);
   W.px.forEach((s,i)=>{
     if(W.done[i]) strokeSolid(ctx, s.pts, inkOf(i), lw);
+    else if(!showG) return;
     else if(W.phase==='demo' && W.demo && i<W.demo.i) strokeDots(ctx, s.pts, 'rgba(190,160,185,.35)', lw*0.7, 1.8);
     else if(i===cur) strokeDots(ctx, s.pts, 'rgba(255,122,198,.95)', lw*0.85, 1.45);
     else strokeDots(ctx, s.pts, 'rgba(200,170,190,.45)', lw*0.65, 1.9);
@@ -1380,7 +1611,7 @@ function drawLesson(){
     else W.reject=null;
   }
   if(W.ink.length>1 && W.phase==='write') strokeSolid(ctx, W.ink, '#7a4a86', lw*0.72);
-  if(W.phase==='write' && cur>=0 && W.px[cur]){
+  if((showG || nudge) && W.phase==='write' && cur>=0 && W.px[cur]){
     const s=W.px[cur];
     drawStartDot(ctx, s.pts[0], cur+1, true);
     drawArrow(ctx, s.pts[0], s.pts[Math.min(1,s.pts.length-1)], '#ff5eac', 1+0.08*Math.sin(now/140));
@@ -1391,11 +1622,18 @@ function localOf(e, canvas){
   const r=canvas.getBoundingClientRect();
   return [e.clientX-r.left, e.clientY-r.top];
 }
-function isPalm(e){ return e.pointerType==='touch' && (activePens.size>0 || performance.now()<penCool); }
-function notePen(e, down){
-  if(e.pointerType!=='pen') return;
-  if(down) activePens.add(e.pointerId);
-  else { activePens.delete(e.pointerId); penCool=performance.now()+700; }
+function penActive(){ return activePens.size>0 || stylusTouches>0 || performance.now()<penCool; }
+function touchList(e){ return e.touches && e.touches.length ? e.touches : (e.changedTouches||[]); }
+function anyStylus(e){ const list=touchList(e); for(let i=0;i<list.length;i++) if(list[i].touchType==='stylus') return true; return false; }
+function refreshStylus(e){
+  const list=e.touches||[];
+  let n=0; for(let i=0;i<list.length;i++) if(list[i].touchType==='stylus') n++;
+  stylusTouches=n;
+}
+function isPalmPointer(e){ return e.pointerType==='touch' && penActive(); }
+function endPen(id){
+  if(id!=null) activePens.delete(id);
+  if(!activePens.size && !stylusTouches) penCool=performance.now()+700;
 }
 function acceptStroke(i){
   W.done[i]=true; W.ink=[]; W.reject=null;
@@ -1411,7 +1649,8 @@ function failStroke(){
   W.reject={pts:W.ink.slice(), t0:performance.now()};
   W.ink=[];
   const cur=currentIndex();
-  if(cur>=0) W.ghost={idx:cur, t0:performance.now(), dur:650};
+  if(cur>=0 && !selfWrite()) W.ghost={idx:cur, t0:performance.now(), dur:650};
+  if(cur>=0 && selfWrite()) W.nudgeUntil=performance.now()+900;
   sfx.boing();
   if(strictOrder){
     const n=(cur<0?1:cur+1);
@@ -1422,25 +1661,43 @@ function failStroke(){
   }
 }
 function finishLetter(){
-  const clean=W.misses<=Math.max(3, W.px.length);
+  const clean=W.misses<=Math.max(3, W.px.length) && !W.hinted;
+  W.attemptClean.push(!!clean);
+  if(W.attempt < (W.reps||3)){
+    const line='이번에는 혼자 써 볼까?';
+    setMsg(line); sfx.chime(2); speak(line);
+    W.phase='pause';
+    const tok=W.token, q=W.q, next=W.attempt+1;
+    setTimeout(()=>{ if(tok!==writeToken || W.q!==q) return; W.attempt=next; beginItem(false); }, WRITE_FAST?280:1400);
+    return;
+  }
+  const letterClean=W.attemptClean.length>0 && W.attemptClean.every(Boolean);
   const p=rand(PRAISE);
-  if(clean){ W.correct++; W.earned++; addStars(1); setMsg(p+' ⭐'); confetti(26); sfx.sparkle(); speak(p,{praise:true, delay:200}); }
-  else { setMsg('잘했어!'); confetti(10); sfx.soft(); speak('잘했어! 조금만 더 하면 할 수 있어!'); }
+  if(letterClean){ W.correct++; W.earned++; addStars(1); setMsg(p+' ⭐'); confetti(26); sfx.sparkle(); speak(p,{praise:true, delay:200}); }
+  else { setMsg('잘했어!'); confetti(14); sfx.soft(); speak('잘했어! 조금만 더 하면 할 수 있어!'); }
   W.phase='pause';
   const tok=W.token, q=W.q;
-  setTimeout(()=>{ if(tok!==writeToken || W.q!==q) return; W.q++; nextItem(); }, 1650);
+  setTimeout(()=>{ if(tok!==writeToken || W.q!==q) return; W.q++; nextItem(); }, WRITE_FAST?280:1650);
 }
 function sayHow(){
   if(!W.item) return;
   speak(W.item.name+eunun(W.item.name)+' 이렇게 써요');
 }
 function beginItem(demo){
-  W.ink=[]; W.reject=null; W.ghost=null; W.pointer=null; W.misses=0;
-  if(demo && !WRITE_FAST){
+  W.ink=[]; W.reject=null; W.ghost=null; W.misses=0; W.hinted=false; W.hintUntil=0; W.nudgeUntil=0;
+  if(W.px && W.px.length) W.done=W.px.map(()=>false);
+  if(typeof resetInks==='function') resetInks();
+  syncAttemptChrome();
+  const self=selfWrite();
+  if(demo && !self && !WRITE_FAST){
     W.phase='demo';
     W.demo={i:0, t0:performance.now(), dur:700};
     setMsg(W.item.name+eunun(W.item.name)+' 이렇게 써요');
     sayHow();
+  } else if(self){
+    W.phase='write'; W.demo=null;
+    const line='이번에는 혼자 써 볼까?';
+    setMsg(line); speak(line);
   } else {
     W.phase='write'; W.demo=null;
     setMsg('따라 써 봐요!');
@@ -1453,7 +1710,9 @@ function nextItem(){
   const item=makeItem(W.list[W.q]);
   if(!item){ W.q++; nextItem(); return; }
   W.item=item;
+  W.attempt=1; W.attemptClean=[];
   $('hwNum').textContent=W.q+1;
+  if($('hwTotal')) $('hwTotal').textContent=W.list.length;
   $('hwHint').textContent=item.emoji || item.show;
   $('hwHint').style.fontSize = (!item.emoji && item.show.length>1) ? 'clamp(32px,6vmin,56px)' : '';
   $('hwText').innerHTML=item.name+eul(item.name)+' 써 봐요<small id="hwSub"></small>';
@@ -1466,69 +1725,60 @@ function nextItem(){
   beginItem(true);
 }
 function writeFinish(){
-  const c=W.correct, r=rating(c), cleared=r>0, lv=W.level;
+  const total=W.list.length, c=W.correct, lv=W.level;
+  // 세 번을 마친 글자는 깨기에 포함된다. 힌트나 틀린 획이 많으면 별만 줄어든다.
+  let r=ratingRatio(c, total);
+  if(r<1) r=1;
+  const cleared=true;
+  W.more=false;
   if(cleared){
     const wp=writeProg();
     wp.best[W.key]=Math.max(wp.best[W.key]||0, r);
+    const next=W.roundStart+W.list.length;
+    const all=stageList(lv);
+    if(!hashParam('only') && next<all.length){ wp.cursor[W.key]=next; W.more=true; }
+    else wp.cursor[W.key]=0;
     if(lv<4) wp.unlocked=Math.max(wp.unlocked, lv+1);
     saveProg();
   }
   resultKind='write';
-  showResult(lv, c, r, W.earned, 0);
+  const info=total+'글자를 세 번씩 다 썼어요!<br>잘 쓴 글자 '+c+'개 · ⭐ +'+W.earned;
+  showResult(lv, c, r, W.earned, 0, info);
+  $('rNext').textContent = W.more ? '다음 글자 ▶' : '다음 단계 ▶';
+  $('rNext').style.display = (cleared && (W.more || lv<4)) ? '' : 'none';
 }
-function startWrite(key){
+function startWrite(key, opt){
   stopWrite();
   W.sheet=false;
   showLessonChrome();
   W.token=writeToken;
   W.key=String(key);
   W.level=+key||1;
+  W.reps=Math.max(1, +hashParam('reps')||3);
   const only=hashParam('only');
-  let pool=writePool(W.key);
-  if(only) pool=[only];
-  W.list=only ? [only] : shuffle(pool).slice(0, Math.min(ROUND, pool.length));
-  W.q=0; W.correct=0; W.earned=0; W.layoutTries=0;
+  if(only){ W.list=[only]; W.roundStart=0; }
+  else {
+    const slice=takeRound(W.level, opt && opt.replay!=null ? opt.replay : null);
+    W.list=slice.list; W.roundStart=slice.start;
+  }
+  W.q=0; W.correct=0; W.earned=0; W.layoutTries=0; W.more=false;
+  if($('hwTotal')) $('hwTotal').textContent=W.list.length;
   $('startOv').classList.remove('on');
   show('write');
   ensureLoop();
   nextItem();
 }
-function onLessonDown(e){
-  notePen(e, true);
-  if(isPalm(e)){ e.preventDefault(); return; }
-  if(current!=='write' || W.sheet) return;
-  if(W.phase==='demo'){ e.preventDefault(); W.phase='write'; W.demo=null; setMsg('따라 써 봐요!'); return; }
-  if(W.phase!=='write') return;
-  e.preventDefault();
-  const c=$('hwCanvas');
-  try{ c.setPointerCapture(e.pointerId); }catch(err){}
-  W.pointer=e.pointerId;
-  W.ink=[localOf(e,c)];
+function pushInk(arr, p){
+  const last=arr[arr.length-1];
+  if(!last || dist2(last,p)>1.4) arr.push(p);
 }
-function onLessonMove(e){
-  if(e.pointerId!==W.pointer) return;
-  if(isPalm(e)) return;
-  const p=localOf(e, $('hwCanvas'));
-  const last=W.ink[W.ink.length-1];
-  if(!last || dist2(last,p)>1.4) W.ink.push(p);
-}
-function onLessonUp(e){
-  notePen(e, false);
-  if(e.pointerId!==W.pointer) return;
-  W.pointer=null;
+function onLessonUp(why){
+  if(why==='cancel'){ W.ink=[]; return; }
   if(W.phase!=='write' || W.ink.length<2){ W.ink=[]; return; }
   const res=judgeInk(W.ink);
   W.last=res;
   if(res.ok) acceptStroke(res.index);
   else failStroke();
-}
-function bindLesson(){
-  const c=$('hwCanvas'); if(!c || c._hw) return; c._hw=1;
-  c.style.touchAction='none';
-  c.addEventListener('pointerdown', onLessonDown);
-  c.addEventListener('pointermove', onLessonMove);
-  c.addEventListener('pointerup', onLessonUp);
-  c.addEventListener('pointercancel', onLessonUp);
 }
 function resetLessonProgress(demo){
   if(!W.px) return;
@@ -1584,26 +1834,8 @@ function drawPrac(){
   ctx.setTransform(L.dpr,0,0,L.dpr,0,0);
   ctx.drawImage(P.layer, 0, 0, L.w, L.h);
 }
-function onPracDown(e){
-  notePen(e, true);
-  if(isPalm(e)){ e.preventDefault(); return; }
-  if(current!=='practice') return;
-  e.preventDefault();
-  try{ $('pracCanvas').setPointerCapture(e.pointerId); }catch(err){}
-  P.pointer=e.pointerId;
-  P.ink={color:P.erase?'#000':P.color, erase:P.erase, pts:[localOf(e,$('pracCanvas'))]};
-}
-function onPracMove(e){
-  if(e.pointerId!==P.pointer || !P.ink) return;
-  const p=localOf(e,$('pracCanvas'));
-  const last=P.ink.pts[P.ink.pts.length-1];
-  if(!last || dist2(last,p)>1.4) P.ink.pts.push(p);
-}
-function onPracUp(e){
-  notePen(e, false);
-  if(e.pointerId!==P.pointer) return;
-  P.pointer=null;
-  if(P.ink && P.ink.pts.length>1) P.strokes.push(P.ink);
+function onPracUp(why){
+  if(why!=='cancel' && P.ink && P.ink.pts.length>1) P.strokes.push(P.ink);
   P.ink=null;
 }
 function startPractice(){
@@ -1639,7 +1871,7 @@ function markPrac(){
   const er=$('pracEraser'); if(er) er.classList.toggle('on', P.erase);
 }
 // ----- 획 모양 확인용 모눈 (#sheet) -----
-const SHEET_CHARS=['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ','ㅏ','ㅑ','ㅓ','ㅕ','ㅗ','ㅛ','ㅜ','ㅠ','ㅡ','ㅣ','가','고','거','구','나','비'];
+const SHEET_CHARS=['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ','ㅏ','ㅑ','ㅓ','ㅕ','ㅗ','ㅛ','ㅜ','ㅠ','ㅡ','ㅣ','가','나','다','마','아','하','고','구','거','기','노','소','어','허'];
 function startSheet(){
   stopWrite();
   W.sheet=true;
@@ -1671,8 +1903,9 @@ function drawSheet(){
     const ci=idx%cols, ri=Math.floor(idx/cols);
     const x=4+ci*(cell+gap), y=4+ri*(cell+label+gap);
     ctx.fillStyle='#5a2a6e'; ctx.font='bold 16px sans-serif'; ctx.textAlign='left'; ctx.textBaseline='top';
-    ctx.fillText(ch+' '+(RAW[ch]?RAW[ch].length+'획':''), x+4, y);
     const item=makeItem(ch); if(!item) return;
+    const nstk=item.cells.reduce((s,c)=>s+c.strokes.length,0);
+    ctx.fillText(ch+' '+nstk+'획', x+4, y);
     const stks=item.cells[0].strokes;
     const ox=x, oy=y+label, s=cell-4;
     roundBox(ctx, ox, oy, s, s, 12); ctx.fillStyle='#fff5fb'; ctx.fill();
@@ -1686,7 +1919,7 @@ function drawSheet(){
 }
 function strokeCounts(){
   const o={};
-  Object.keys(RAW).forEach(k=>o[k]=RAW[k].length);
+  Object.keys(ISO).forEach(k=>o[k]=ISO[k].length);
   return o;
 }
 function previewItem(ch){
@@ -1694,16 +1927,124 @@ function previewItem(ch){
   return item.cells.map(c=>c.strokes.map(s=>s.pts.map(p=>[Math.round(p[0]*10)/10, Math.round(p[1]*10)/10])));
 }
 
-bindLesson();
-const pc=$('pracCanvas');
-if(pc && !pc._hw){
-  pc._hw=1; pc.style.touchAction='none';
-  pc.addEventListener('pointerdown', onPracDown);
-  pc.addEventListener('pointermove', onPracMove);
-  pc.addEventListener('pointerup', onPracUp);
-  pc.addEventListener('pointercancel', onPracUp);
+// iPad Safari, especially a home-screen app, often never delivers a finished
+// pointerType "pen" stream. Scribble or the gesture system fires pointercancel,
+// and the pencil continues as touch events with touchType "stylus". Finger
+// input stays on pointer events. Stylus touches are never treated as a palm.
+function makeInk(board, canvas, handlers){
+  const s={on:false, via:null, pid:null, tid:null, kind:null, lost:false, timer:0};
+  function reset(){ s.on=false; s.via=null; s.pid=null; s.tid=null; s.kind=null; s.lost=false; clearTimeout(s.timer); }
+  function finish(why){ if(!s.on) return; reset(); handlers.up(why); }
+  function start(via, kind, pid, tid, p){
+    if(s.on) return;
+    if(handlers.down(p, kind)===false) return;
+    s.on=true; s.via=via; s.kind=kind; s.pid=pid; s.tid=tid; s.lost=false;
+  }
+  board.addEventListener('pointerdown', e=>{
+    if(e.pointerType==='pen'){ activePens.add(e.pointerId); if(e.cancelable) e.preventDefault(); }
+    if(!handlers.alive()) return;
+    if(isPalmPointer(e)){ if(e.cancelable) e.preventDefault(); return; }
+    if(e.cancelable) e.preventDefault();
+    if(s.on) return;
+    const p=localOf(e, canvas);
+    const kind=e.pointerType==='pen' ? 'pen' : 'finger';
+    start('pointer', kind, e.pointerId, null, p);
+    if(s.on){ try{ board.setPointerCapture(e.pointerId); }catch(err){} }
+  });
+  board.addEventListener('pointermove', e=>{
+    if(!s.on || s.via!=='pointer' || e.pointerId!==s.pid) return;
+    const raw=(typeof e.getCoalescedEvents==='function') ? e.getCoalescedEvents() : null;
+    const evs=(raw && raw.length) ? raw : [e];
+    evs.forEach(ev=>handlers.move(localOf(ev, canvas)));
+  });
+  board.addEventListener('pointerup', e=>{
+    if(e.pointerType==='pen') endPen(e.pointerId);
+    if(!s.on || s.via!=='pointer' || e.pointerId!==s.pid) return;
+    handlers.move(localOf(e, canvas));
+    finish('up');
+  });
+  board.addEventListener('pointercancel', e=>{
+    if(e.pointerType==='pen') endPen(e.pointerId);
+    if(!s.on || e.pointerId!==s.pid) return;
+    if(s.kind==='pen'){
+      s.lost=true; s.via='touch';
+      clearTimeout(s.timer);
+      s.timer=setTimeout(()=>{ if(s.on && s.lost){ reset(); handlers.up('cancel'); } }, 400);
+      return;
+    }
+    finish('cancel');
+  });
+  board.addEventListener('touchstart', e=>{
+    refreshStylus(e);
+    const stylus=anyStylus(e);
+    if(stylus && e.cancelable) e.preventDefault();
+    if(!handlers.alive() || !stylus || s.on) return;
+    const t=touchList(e)[0];
+    if(!t) return;
+    start('touch', 'stylus', null, t.identifier, localOf(t, canvas));
+  }, {passive:false});
+  board.addEventListener('touchmove', e=>{
+    refreshStylus(e);
+    if(anyStylus(e) && e.cancelable) e.preventDefault();
+    if(!s.on) return;
+    const stylus=anyStylus(e);
+    if(s.lost && !stylus) return;
+    if(s.via==='pointer' && !s.lost) return;
+    if(!stylus && s.kind!=='stylus') return;
+    const list=e.touches||[];
+    let t=null;
+    for(let i=0;i<list.length;i++){
+      if(s.tid==null || list[i].identifier===s.tid || list[i].touchType==='stylus'){ t=list[i]; break; }
+    }
+    if(!t) return;
+    s.tid=t.identifier; s.lost=false; s.via='touch'; s.kind='stylus';
+    clearTimeout(s.timer);
+    handlers.move(localOf(t, canvas));
+  }, {passive:false});
+  board.addEventListener('touchend', e=>{
+    refreshStylus(e);
+    if(!stylusTouches && !activePens.size) penCool=performance.now()+700;
+    if(!s.on || s.via!=='touch') return;
+    const ended=[...(e.changedTouches||[])].some(t=>t.identifier===s.tid);
+    if(ended) finish('up');
+  }, {passive:false});
+  board.addEventListener('touchcancel', e=>{
+    refreshStylus(e);
+    if(s.on && s.via==='touch') finish('cancel');
+  }, {passive:false});
+  return {reset};
 }
+function writingNow(){ return current==='write' || current==='practice'; }
+function onBoard(el){ return !!(el && el.closest && el.closest('.hwBoard')); }
+['touchstart','touchmove'].forEach(type=>{
+  document.addEventListener(type, e=>{
+    if(type==='touchstart') logInk(e, 'touch');
+    if(!writingNow() || !anyStylus(e)) return;
+    if(onBoard(e.target) && e.cancelable) e.preventDefault();
+  }, {capture:true, passive:false});
+});
+['pointerdown','pointerup','pointercancel'].forEach(type=>{
+  document.addEventListener(type, e=>{ logInk(e, 'pointer'); }, {capture:true});
+});
+const lessonInk=makeInk($('hwBoard'), $('hwCanvas'), {
+  alive(){ return current==='write' && !W.sheet; },
+  down(p){
+    if(W.phase==='demo'){ W.phase='write'; W.demo=null; setMsg('따라 써 봐요!'); return false; }
+    if(W.phase!=='write') return false;
+    W.ink=[p];
+  },
+  move(p){ if(W.phase==='write') pushInk(W.ink, p); },
+  up: onLessonUp
+});
+const pracInk=makeInk($('pracBoard'), $('pracCanvas'), {
+  alive(){ return current==='practice'; },
+  down(p){ P.ink={color:P.erase?'#000':P.color, erase:P.erase, pts:[p]}; },
+  move(p){ if(P.ink) pushInk(P.ink.pts, p); },
+  up: onPracUp
+});
+resetInks=function(){ lessonInk.reset(); pracInk.reset(); };
 $('strictBtn').onclick=()=>setStrict(!strictOrder);
+$('debugBtn').onclick=()=>setInkDebug(!inkDebugOn);
 $('pracBtn').onclick=()=>{ sfx.pop(); speak('자유롭게 써 봐요'); startPractice(); };
 document.querySelectorAll('#wstages .wstage').forEach(st=>st.addEventListener('click', ()=>{
   const lv=+st.dataset.wlevel;
@@ -1713,6 +2054,11 @@ document.querySelectorAll('#wstages .wstage').forEach(st=>st.addEventListener('c
 longPress($('wParentBtn'), 1500, openParent, '부모님: 꾹 누르면 설정이 열려요');
 $('hwClear').onclick=()=>{ sfx.pop(); resetLessonProgress(false); };
 $('hwDemo').onclick=()=>{ sfx.pop(); resetLessonProgress(true); };
+$('hwHintBtn').onclick=()=>{
+  W.hinted=true; W.hintUntil=performance.now()+1500; sfx.pop();
+  const n=currentIndex();
+  setMsg(n>=0 ? (n+1)+'번 획을 살짝 보여 줄게' : '이렇게 생겼어요');
+};
 $('hwHear').onclick=sayHow;
 $('hwListen').onclick=sayHow;
 $('pracClear').onclick=()=>{ P.strokes=[]; P.ink=null; sfx.pop(); };
@@ -1735,7 +2081,14 @@ window.__hw={
   restart(){ resetLessonProgress(false); },
   counts: strokeCounts,
   preview: previewItem,
-  errs(){ return window.__errs.slice(); }
+  errs(){ return window.__errs.slice(); },
+  attempt(){ return W.attempt||1; },
+  reps(){ return W.reps||3; },
+  self(){ return selfWrite(); },
+  guided(){ return guideVisible(); },
+  list(){ return (W.list||[]).slice(); },
+  hinted(){ return !!W.hinted; },
+  setDebug: setInkDebug
 };
 syncStrictUi();
 renderWriteStages();
