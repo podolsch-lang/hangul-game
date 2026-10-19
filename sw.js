@@ -1,5 +1,5 @@
 // 한글 놀이터 service worker: 인터넷 없이도 열리도록 파일을 저장해 둠
-const CACHE = 'hangul-game-v3';
+const CACHE = 'hangul-game-v4';
 const CORE = ['./', './index.html', './manifest.json', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-512-maskable.png', './icons/apple-touch-icon.png', './audio/index.json'];
 self.addEventListener('install', e => {
   e.waitUntil((async () => {
