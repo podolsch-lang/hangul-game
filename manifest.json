@@ -1,6 +1,6 @@
 {
-  "name": "한글 놀이터",
-  "short_name": "한글 놀이터",
+  "name": "송하윤의 한글 놀이터 ❤️",
+  "short_name": "하윤 한글놀이터",
   "description": "6살 아이를 위한 한글 놀이 게임 (하늘에서 내려오는 글자, 낱말 고르기, 첫 글자 찾기, 자음 모음 합치기)",
   "lang": "ko-KR",
   "start_url": "./index.html",
