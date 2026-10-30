@@ -424,7 +424,7 @@ body.dino .overlay,body.dino #startOv{background:rgba(240,255,246,.34)}
 </head>
 <body class="heart">
 <button type="button" id="updateBanner" hidden>새 버전이 있어요 — 눌러서 업데이트</button>
-<div id="verTag">v1.5</div>
+<div id="verTag">v1.6</div>
 <div id="byTag">by 차차송</div>
 <div class="sparkles" id="sparkles"></div>
 
@@ -466,8 +466,8 @@ body.dino .overlay,body.dino #startOv{background:rgba(240,255,246,.34)}
   <div class="topbar"><button class="iconbtn back" aria-label="집으로">🏠</button><span class="pill">⭐ <span class="starCount">0</span></span><button class="iconbtn" data-go="book" aria-label="스티커 북">📒</button></div>
   <h2>☁️ 단계를 골라요 ☁️</h2>
   <div class="stages">
-    <div class="stage" data-level="1"><div class="snum">1</div><div class="sinfo"><div class="sname">자음 · 모음</div><div class="sex">ㄱ ㄴ ㄷ · ㅏ ㅑ ㅓ</div><div class="srate" data-rate="1"></div>
-      <div class="subs"><button class="sub-btn" data-start="1c">ㄱ 자음</button><button class="sub-btn" data-start="1v">ㅏ 모음</button></div></div><div class="lock">🔒</div></div>
+    <div class="stage" data-level="1"><div class="snum">1</div><div class="sinfo"><div class="sname">자음 · 모음</div><div class="sex">ㄱ ㄴ ㄷ · ㅎ · ㅏ · ㅣ · 가 나 · 하</div><div class="srate" data-rate="1"></div>
+      <div class="subs"><button class="sub-btn" data-start="1c">ㄱ 자음</button><button class="sub-btn" data-start="1v">ㅏ 모음</button><button class="sub-btn" data-start="1s">가 글자</button></div></div><div class="lock">🔒</div></div>
     <div class="stage" data-level="2" data-start="2"><div class="snum">2</div><div class="sinfo"><div class="sname">쉬운 낱말</div><div class="sex">🦋 나비 · 🥛 우유</div><div class="srate" data-rate="2"></div><div class="subs"><span class="sub-btn">▶ 놀기</span></div></div><div class="lock">🔒</div></div>
     <div class="stage" data-level="3" data-start="3"><div class="snum">3</div><div class="sinfo"><div class="sname">받침 낱말</div><div class="sex">🐻 곰 · 🌙 달</div><div class="srate" data-rate="3"></div><div class="subs"><span class="sub-btn">▶ 놀기</span></div></div><div class="lock">🔒</div></div>
   </div>
@@ -476,7 +476,7 @@ body.dino .overlay,body.dino #startOv{background:rgba(240,255,246,.34)}
 
 <!-- 하늘에서 내려오는 글자 -->
 <section class="screen" id="fall">
-  <div class="topbar"><button class="iconbtn back" aria-label="집으로">🏠</button><span class="pill"><span id="fNum">1</span> / 10</span><span class="pill">⭐ <span class="starCount">0</span></span></div>
+  <div class="topbar"><button class="iconbtn back" aria-label="집으로">🏠</button><span class="pill"><span id="fNum">1</span> / <span id="fTotal">14</span></span><span class="pill">⭐ <span class="starCount">0</span></span></div>
   <div class="fhead" id="fhead"><div class="thint" id="fHint" hidden></div><div class="ttext" id="fText">소리를 듣고 찾아봐!</div><button class="big fReplay" id="fReplay" type="button">🔊 다시 듣기</button></div>
   <div class="timer"><div class="fill" id="tFill"></div><div class="sun" id="tSun">☀️</div></div>
   <div class="arena" id="arena"><div class="ground"></div><div class="amsg" id="amsg"></div><div class="combo" id="combo"></div></div>
@@ -581,7 +581,7 @@ body.dino .overlay,body.dino #startOv{background:rgba(240,255,246,.34)}
     </div>
     <div class="btnrow"><button class="big white" id="unlockAll">🔓 모든 단계 열기</button><button class="big" id="parentClose">닫기</button></div>
     <div class="psec" id="verSec">
-      <div id="appVer">v1.5</div>
+      <div id="appVer">v1.6</div>
       <button class="big white" id="checkUpdate" type="button">새 버전 확인</button>
     </div>
   </div>
@@ -594,7 +594,7 @@ body.dino .overlay,body.dino #startOv{background:rgba(240,255,246,.34)}
   <div class="stages">
     <div class="stage wstage" data-wlevel="1"><div class="snum">1</div><div class="sinfo"><div class="sname">자음 쓰기</div><div class="sex">ㄱ ㄴ ㄷ · ㅎ</div><div class="srate" data-wrate="1"></div></div><div class="lock">🔒</div></div>
     <div class="stage wstage locked" data-wlevel="2"><div class="snum">2</div><div class="sinfo"><div class="sname">모음 쓰기</div><div class="sex">ㅏ ㅑ ㅓ · ㅣ</div><div class="srate" data-wrate="2"></div></div><div class="lock">🔒</div></div>
-    <div class="stage wstage locked" data-wlevel="3"><div class="snum">3</div><div class="sinfo"><div class="sname">글자 쓰기</div><div class="sex">가 나 고 · 받침 없음</div><div class="srate" data-wrate="3"></div></div><div class="lock">🔒</div></div>
+    <div class="stage wstage locked" data-wlevel="3"><div class="snum">3</div><div class="sinfo"><div class="sname">글자 쓰기</div><div class="sex">가 나 다 · 하</div><div class="srate" data-wrate="3"></div></div><div class="lock">🔒</div></div>
     <div class="stage wstage locked" data-wlevel="4"><div class="snum">4</div><div class="sinfo"><div class="sname">낱말 쓰기</div><div class="sex">🦋 나비 · 🥛 우유</div><div class="srate" data-wrate="4"></div></div><div class="lock">🔒</div></div>
   </div>
   <div class="btnrow"><button class="big" id="pracBtn" type="button">🖍️ 자유롭게 써보기</button></div>
@@ -605,7 +605,7 @@ body.dino .overlay,body.dino #startOv{background:rgba(240,255,246,.34)}
 <section class="screen" id="write">
   <div class="topbar">
     <button class="iconbtn back" aria-label="뒤로">🏠</button>
-    <span class="pill"><span id="hwNum">1</span> / <span id="hwTotal">7</span></span>
+    <span class="pill"><span id="hwSet"></span><span id="hwNum">1</span> / <span id="hwTotal">14</span></span>
     <span class="pill" id="hwRep">✏️●○○</span>
     <span class="pill strictPill on" data-strict-pill>획순 켜짐</span>
     <span class="pill">⭐ <span class="starCount">0</span></span>
@@ -900,6 +900,7 @@ function applyTouchAction(){
   document.body.style.touchAction = writing ? 'none' : 'manipulation';
 }
 function show(id){
+  if(id!=='write' && current==='write') saveWritePlace();
   if(id!=='fall') stopFall();
   if(id!=='write' && id!=='practice') stopWrite();
   current = id;
@@ -1035,16 +1036,21 @@ function finish(){ show('done'); $('doneText').textContent='별을 '+ROUND+'개 
 function startGame(g){ lastGame=g; if(g==='mix') startMix(); else startQuiz(g); }
 
 // ===== 하늘에서 내려오는 글자 =====
+function gadaSet(){
+  return CONS.map(c=>{ const ch=compose(c[1], 0); return {show:ch, say:ch, hint:ch, big:true}; });
+}
 function levelPool(key){
   if(key==='1c') return CONS.map(c=>({show:c[0], say:c[2], hint:c[0], big:true}));
   if(key==='1v') return VOWS10.map(v=>({show:v[0], say:v[1], hint:v[0], big:true}));
+  if(key==='1s') return gadaSet();
   if(key==='2') return W2.map(w=>({show:w[1], say:w[1], hint:w[0]}));
   return W3.map(w=>({show:w[1], say:w[1], hint:w[0]}));
 }
 const F = {key:'1c', level:1, q:0, list:[], pool:[], correct:0, streak:0, best:0, earned:0, bubbles:[], t:0, running:false, answered:false, raf:0, last:0, token:0, W:0, H:0, size:100};
 function startFall(key){
   F.key=key; F.level=parseInt(key,10); F.q=0; F.correct=0; F.streak=0; F.best=0; F.earned=0;
-  F.pool=levelPool(key); F.list=shuffle(F.pool).slice(0,ROUND); $('combo').classList.remove('on');
+  F.pool=levelPool(key); F.list=shuffle(F.pool); F.halfCheered=false; $('combo').classList.remove('on');
+  if($('fTotal')) $('fTotal').textContent=F.list.length;
   show('fall'); F.token++; nextFall();
 }
 function stopFall(){ F.running=false; cancelAnimationFrame(F.raf); F.token++; F.bubbles.forEach(b=>b.el.remove()); F.bubbles=[]; }
@@ -1127,12 +1133,16 @@ function tapBubble(b){
     sfx.chime(F.streak-1); if(fast) setTimeout(()=>sfx.sparkle(),350);
     F.bubbles.forEach(o=>{ if(o!==b) o.el.classList.add('fade'); });
     const p=rand(PRAISE);
+    const half=Math.ceil((F.list.length||1)/2);
+    const cheer=!F.halfCheered && half>1 && (F.q+1)===half;
+    if(cheer) F.halfCheered=true;
     revealFallLetter(it);
-    showMsg('🦖 '+(it.big?it.show+' ':'')+p+(fast?'<br>⚡ 빨리 찾았어요! +2⭐':' +1⭐'));
+    showMsg(cheer ? '🎉 반 왔어요!' : ('🦖 '+(it.big?it.show+' ':'')+p+(fast?'<br>⚡ 빨리 찾았어요! +2⭐':' +1⭐')));
+    if(cheer) confetti(30);
     if(F.streak>=2){ const c=$('combo'); c.textContent=(theme==='dino'?'🦖 ':'💖 ')+F.streak+'연속!'; c.classList.remove('on'); void c.offsetWidth; c.classList.add('on');
       if(F.streak>=3){ confetti(10+F.streak*4); } }
     const tok=F.token;
-    setTimeout(()=>{ if(tok===F.token) speak(F.streak>=3 ? F.streak+'연속! '+p : p,{praise:true}); }, 450);
+    setTimeout(()=>{ if(tok!==F.token) return; speak(cheer ? '반 왔어요! 계속 찾아볼까?' : (F.streak>=3 ? F.streak+'연속! '+p : p),{praise:true}); }, 450);
     setTimeout(()=>{ if(tok===F.token){ F.q++; nextFall(); } }, 2300);
   } else {
     b.tried=true; b.el.classList.remove('wob'); void b.el.offsetWidth; b.el.classList.add('wob','tried');
@@ -1161,9 +1171,9 @@ let resultKind = 'fall';
 function fallFinish(){
   F.running=false;
   resultKind = 'fall';
-  const c=F.correct, r=rating(c), cleared=r>0, lv=F.level;
+  const total=F.list.length||ROUND, c=F.correct, r=ratingRatio(c, total), cleared=r>0, lv=F.level;
   if(cleared){ const k=String(F.key); prog.best[k]=Math.max(prog.best[k]||0,r); if(lv<3) prog.unlocked=Math.max(prog.unlocked,lv+1); saveProg(); }
-  showResult(lv, c, r, F.earned, F.best);
+  showResult(lv, c, r, F.earned, F.best, total+'개 중 '+c+'개 맞혔어요!<br>⭐ +'+F.earned+(F.best>=3?' · 최고 '+F.best+'연속!':''));
 }
 function showResult(lv, c, r, earned, best, info){
   show('fres');
@@ -1198,7 +1208,7 @@ function revealSticker(){
   setTimeout(()=>{ const r=big.getBoundingClientRect(); sparks(r.left+r.width/2, r.top+r.height/2, 40, 220); confetti(30); }, 700);
   speak((isNew?'새 스티커를 얻었어요! ':'')+s[1]+'!',{praise:true});
 }
-$('stkOk').onclick=()=>{ $('stkOv').classList.remove('on'); sfx.pop(); };
+$('stkOk').onclick=()=>{ $('stkOv').classList.remove('on'); sfx.pop(); if(W.onCheer){ const fn=W.onCheer; W.onCheer=null; fn(); } };
 $('rNext').onclick=()=>{
   if(resultKind==='write'){ if(W.more) startWrite(String(W.level)); else startWrite(String(W.level+1)); }
   else startFall(String(F.level+1));
@@ -1211,7 +1221,7 @@ function isUnlocked(lv){ return prog.all || lv<=prog.unlocked; }
 function renderStages(){
   document.querySelectorAll('#stages .stage').forEach(st=>{ const lv=+st.dataset.level; st.classList.toggle('locked', !isUnlocked(lv)); });
   document.querySelectorAll('#stages [data-rate]').forEach(e=>{ const lv=e.dataset.rate;
-    const best = lv==='1' ? Math.max(prog.best['1c']||0, prog.best['1v']||0) : (prog.best[lv]||0);
+    const best = lv==='1' ? Math.max(prog.best['1c']||0, prog.best['1v']||0, prog.best['1s']||0) : (prog.best[lv]||0);
     e.textContent = best ? '⭐'.repeat(best)+'☆'.repeat(3-best) : '☆☆☆'; });
 }
 document.querySelectorAll('#stages .stage').forEach(st=>st.addEventListener('click', ev=>{
@@ -1219,7 +1229,7 @@ document.querySelectorAll('#stages .stage').forEach(st=>st.addEventListener('cli
   if(!isUnlocked(lv)){ sfx.boing(); st.classList.remove('wob'); toast('🔒 '+(lv-1)+'단계를 먼저 깨 보자!'); speak((lv-1)+'단계를 먼저 깨 보자!'); return; }
   const sb=ev.target.closest('[data-start]');
   if(sb) { sfx.pop(); startFall(sb.dataset.start); }
-  else if(lv===1){ speak('자음이나 모음을 골라요'); toast('ㄱ 자음 또는 ㅏ 모음을 눌러요'); }
+  else if(lv===1){ speak('자음이나 모음을 골라요'); toast('ㄱ 자음, ㅏ 모음, 가 글자 중에서 골라요'); }
 }));
 // 부모님: 꾹 누르면 설정 열기 (아이가 실수로 못 열게)
 function longPress(el, ms, fn, hint){ let h=0;
@@ -1360,81 +1370,60 @@ function circlePts(cx,cy,r,n){
   }
   return p;
 }
-// 교과서 정자. 가로·세로는 곧게, ㄱ·ㅋ의 내리긋기만 살짝 왼쪽으로 기운다. 좌표는 0–100, y는 아래.
+// 교과서 정자. 가로·세로는 곧고, 꺾이는 곳은 같은 점에서 만난다. 삐침·튀어나옴 없음. 좌표 0–100, y는 아래.
+// 획 수와 순서는 그대로다 (ㄱ1 ㄴ1 ㄷ2 ㄹ3 ㅁ3 ㅂ4 ㅅ2 ㅇ1 ㅈ2 ㅊ3 ㅋ2 ㅌ3 ㅍ4 ㅎ3 / ㅏ2 ㅑ3 ㅓ2 ㅕ3 ㅗ2 ㅛ3 ㅜ2 ㅠ3 ㅡ1 ㅣ1).
 const ISO = {
-  'ㄱ':[[[18,32],[80,32],[70,80]]],
-  'ㄴ':[[[28,16],[28,74],[82,74]]],
-  'ㄷ':[[[16,20],[84,20]],[[16,20],[16,80],[84,80]]],
-  'ㄹ':[[[16,14],[76,14],[76,38]],[[28,38],[76,38]],[[28,38],[28,84],[84,84]]],
-  'ㅁ':[[[20,16],[20,84]],[[20,16],[80,16],[80,78]],[[20,78],[80,78]]],
-  'ㅂ':[[[28,12],[28,88]],[[72,12],[72,88]],[[28,46],[72,46]],[[28,74],[72,74]]],
-  'ㅅ':[[[52,18],[24,84]],[[40,46],[78,84]]],
-  'ㅇ':[circlePts(50,50,32,40)],
-  'ㅈ':[[[16,28],[72,28],[34,84]],[[55,53],[90,82]]],
-  'ㅊ':[[[32,12],[68,12]],[[16,30],[74,30],[36,86]],[[56,56],[92,82]]],
-  'ㅋ':[[[18,24],[80,24],[70,82]],[[30,50],[76,50]]],
-  'ㅌ':[[[16,18],[84,18]],[[16,46],[78,46]],[[16,18],[16,82],[84,82]]],
-  'ㅍ':[[[16,22],[84,22]],[[32,22],[32,78]],[[68,22],[68,78]],[[16,78],[84,78]]],
-  'ㅎ':[[[30,14],[70,14]],[[16,30],[84,30]],circlePts(50,64,22,40)],
-  'ㅏ':[[[40,12],[40,88]],[[40,50],[78,50]]],
-  'ㅑ':[[[38,12],[38,88]],[[38,36],[76,36]],[[38,64],[76,64]]],
-  'ㅓ':[[[18,48],[58,48]],[[66,12],[66,88]]],
-  'ㅕ':[[[16,34],[56,34]],[[16,62],[56,62]],[[64,12],[64,88]]],
-  'ㅗ':[[[50,16],[50,46]],[[14,56],[86,56]]],
-  'ㅛ':[[[36,14],[36,44]],[[64,14],[64,44]],[[12,56],[88,56]]],
-  'ㅜ':[[[12,34],[88,34]],[[50,34],[50,80]]],
-  'ㅠ':[[[12,30],[88,30]],[[36,30],[36,78]],[[64,30],[64,78]]],
-  'ㅡ':[[[14,50],[86,50]]],
-  'ㅣ':[[[50,12],[50,88]]]
+  'ㄱ':[[[14,22],[86,22],[86,82]]],
+  'ㄴ':[[[14,18],[14,82],[86,82]]],
+  'ㄷ':[[[14,18],[86,18]],[[14,18],[14,82],[86,82]]],
+  'ㄹ':[[[14,14],[86,14],[86,40]],[[14,40],[86,40]],[[14,40],[14,86],[86,86]]],
+  'ㅁ':[[[16,16],[16,84]],[[16,16],[84,16],[84,84]],[[16,84],[84,84]]],
+  'ㅂ':[[[30,12],[30,86]],[[70,12],[70,86]],[[30,48],[70,48]],[[30,86],[70,86]]],
+  'ㅅ':[[[50,16],[18,86]],[[34,51],[82,86]]],
+  'ㅇ':[circlePts(50,50,34,48)],
+  'ㅈ':[[[18,24],[68,24],[28,84]],[[52,48],[86,84]]],
+  'ㅊ':[[[36,10],[64,10]],[[18,28],[72,28],[32,88]],[[52,58],[88,86]]],
+  'ㅋ':[[[14,22],[86,22],[86,84]],[[40,52],[86,52]]],
+  'ㅌ':[[[14,16],[86,16]],[[14,48],[86,48]],[[14,16],[14,84],[86,84]]],
+  'ㅍ':[[[16,20],[84,20]],[[32,20],[32,80]],[[68,20],[68,80]],[[16,80],[84,80]]],
+  'ㅎ':[[[34,12],[66,12]],[[14,28],[86,28]],circlePts(50,62,22,48)],
+  'ㅏ':[[[42,10],[42,90]],[[42,50],[78,50]]],
+  'ㅑ':[[[40,10],[40,90]],[[40,36],[76,36]],[[40,64],[76,64]]],
+  'ㅓ':[[[16,50],[56,50]],[[68,10],[68,90]]],
+  'ㅕ':[[[14,36],[54,36]],[[14,64],[54,64]],[[66,10],[66,90]]],
+  'ㅗ':[[[50,14],[50,52]],[[14,52],[86,52]]],
+  'ㅛ':[[[36,12],[36,50]],[[64,12],[64,50]],[[12,50],[88,50]]],
+  'ㅜ':[[[12,32],[88,32]],[[50,32],[50,86]]],
+  'ㅠ':[[[12,28],[88,28]],[[36,28],[36,86]],[[64,28],[64,86]]],
+  'ㅡ':[[[12,50],[88,50]]],
+  'ㅣ':[[[50,10],[50,90]]]
 };
-// 세로모음 글자(가·나·어)의 자음. 칸 전체 좌표. ㄱ은 좁고 삐침이 있다.
-const SIDE = {
-  'ㄱ':[[[12,28],[46,28],[26,68]]],
-  'ㄴ':[[[16,16],[16,78],[44,78]]],
-  'ㄷ':[[[12,16],[46,16]],[[12,16],[12,80],[46,80]]],
-  'ㄹ':[[[12,12],[42,12],[42,34]],[[16,36],[42,36]],[[20,38],[20,82],[46,82]]],
-  'ㅁ':[[[14,14],[14,84]],[[14,14],[44,14],[44,70]],[[14,76],[44,76]]],
-  'ㅂ':[[[18,10],[18,88]],[[40,10],[40,88]],[[18,46],[40,46]],[[18,74],[40,74]]],
-  'ㅅ':[[[34,14],[16,82]],[[27,41],[46,78]]],
-  'ㅇ':[circlePts(30,48,16,40)],
-  'ㅈ':[[[12,26],[42,26],[22,82]],[[34,50],[48,78]]],
-  'ㅊ':[[[22,10],[40,10]],[[10,24],[44,24],[24,84]],[[36,49],[50,80]]],
-  'ㅋ':[[[12,22],[46,22],[28,72]],[[18,46],[38,46]]],
-  'ㅌ':[[[12,14],[46,14]],[[14,42],[42,42]],[[12,14],[12,80],[46,80]]],
-  'ㅍ':[[[12,16],[46,16]],[[20,16],[20,70]],[[38,16],[38,70]],[[12,74],[46,74]]],
-  'ㅎ':[[[20,8],[40,8]],[[10,22],[48,22]],circlePts(29,56,18,40)]
-};
-const VSIDE = {
-  'ㅏ':[[[74,10],[74,90]],[[74,48],[94,48]]],
-  'ㅑ':[[[74,10],[74,90]],[[74,34],[94,34]],[[74,62],[94,62]]],
-  'ㅓ':[[[50,42],[68,42]],[[76,10],[76,90]]],
-  'ㅕ':[[[48,32],[68,32]],[[48,58],[68,58]],[[76,10],[76,90]]],
-  'ㅣ':[[[78,10],[78,90]]]
-};
-// 가로모음 글자(고·구). 자음은 위, 모음은 아래.
-const TOP = {
-  'ㄱ':[[[20,12],[78,12],[64,40]]],
-  'ㄴ':[[[28,8],[28,36],[74,36]]],
-  'ㄷ':[[[18,8],[80,8]],[[18,8],[18,38],[80,38]]],
-  'ㄹ':[[[16,6],[74,6],[74,18]],[[22,20],[74,20]],[[26,22],[26,40],[80,40]]],
-  'ㅁ':[[[22,6],[22,40]],[[22,6],[76,6],[76,32]],[[22,36],[76,36]]],
-  'ㅂ':[[[30,4],[30,42]],[[70,4],[70,42]],[[30,20],[70,20]],[[30,34],[70,34]]],
-  'ㅅ':[[[52,6],[30,40]],[[43,20],[74,38]]],
-  'ㅇ':[circlePts(50,22,16,40)],
-  'ㅈ':[[[18,10],[70,10],[36,40]],[[55,24],[82,40]]],
-  'ㅊ':[[[32,4],[64,4]],[[16,14],[72,14],[38,42]],[[56,26],[84,42]]],
-  'ㅋ':[[[18,8],[80,8],[66,40]],[[28,24],[73,24]]],
-  'ㅌ':[[[16,6],[82,6]],[[20,20],[76,20]],[[16,6],[16,40],[82,40]]],
-  'ㅍ':[[[16,6],[84,6]],[[32,6],[32,32]],[[68,6],[68,32]],[[16,36],[84,36]]],
-  'ㅎ':[[[32,4],[68,4]],[[18,14],[82,14]],circlePts(50,34,12,40)]
-};
-const VTOP = {
-  'ㅗ':[[[50,50],[50,68]],[[14,76],[86,76]]],
-  'ㅛ':[[[36,48],[36,66]],[[64,48],[64,66]],[[12,76],[88,76]]],
-  'ㅜ':[[[14,54],[86,54]],[[50,54],[50,88]]],
-  'ㅠ':[[[14,52],[86,52]],[[36,52],[36,86]],[[64,52],[64,86]]],
-  'ㅡ':[[[14,72],[86,72]]]
-};
+function scaleStrokes(strokes, box){
+  return strokes.map(st=>st.map(([x,y])=>[
+    Math.round((box.x + x/100*box.w)*10)/10,
+    Math.round((box.y + y/100*box.h)*10)/10
+  ]));
+}
+function scaleUniform(strokes, box){
+  const s=Math.min(box.w, box.h)/100;
+  const ox=box.x+(box.w-100*s)/2, oy=box.y+(box.h-100*s)/2;
+  return strokes.map(st=>st.map(([x,y])=>[
+    Math.round((ox + x*s)*10)/10,
+    Math.round((oy + y*s)*10)/10
+  ]));
+}
+function placeGlyph(ch, box){
+  const src=ISO[ch];
+  const round=src.some(st=>st.length>8);
+  return round ? scaleUniform(src, box) : scaleStrokes(src, box);
+}
+const CONS_CH=['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+const VVERT=['ㅏ','ㅑ','ㅓ','ㅕ','ㅣ'];
+const VHORZ=['ㅗ','ㅛ','ㅜ','ㅠ','ㅡ'];
+const SIDE={}, TOP={}, VSIDE={}, VTOP={};
+CONS_CH.forEach(ch=>{ SIDE[ch]=placeGlyph(ch,{x:8,y:14,w:48,h:72}); TOP[ch]=placeGlyph(ch,{x:12,y:6,w:76,h:44}); });
+VVERT.forEach(ch=>{ VSIDE[ch]=placeGlyph(ch,{x:60,y:8,w:34,h:84}); });
+VHORZ.forEach(ch=>{ VTOP[ch]=placeGlyph(ch,{x:8,y:52,w:84,h:44}); });
 const JAMO_NAME = {};
 CONS.forEach(c=>JAMO_NAME[c[0]]=c[2]);
 VOWS10.forEach(v=>JAMO_NAME[v[0]]=v[1]);
@@ -1487,7 +1476,8 @@ function logInk(e, src){
 }
 function isWriteUnlocked(lv){ return prog.all || lv<=writeProg().unlocked; }
 function renderWriteStages(){
-  const base={1:'ㄱ ㄴ ㄷ · ㅎ',2:'ㅏ ㅑ ㅓ · ㅣ',3:'가 나 다 · 하',4:'🦋 나비 · 🥛 우유'};
+  const base={1:'ㄱ ㄴ ㄷ · ㅎ',2:'ㅏ ㅑ ㅓ · ㅣ',4:'🦋 나비 · 🥛 우유'};
+  const sylName={ㅏ:'가 나 다 · 하',ㅑ:'갸 냐 댜 · 햐',ㅓ:'거 너 더 · 허',ㅕ:'겨 녀 뎌 · 혀',ㅗ:'고 노 도 · 호',ㅛ:'교 뇨 됴 · 효',ㅜ:'구 누 두 · 후',ㅠ:'규 뉴 듀 · 휴',ㅡ:'그 느 드 · 흐',ㅣ:'기 니 디 · 히'};
   document.querySelectorAll('#wstages .wstage').forEach(st=>{
     st.classList.toggle('locked', !isWriteUnlocked(+st.dataset.wlevel));
   });
@@ -1500,6 +1490,13 @@ function renderWriteStages(){
     const list=stageList(lv);
     const at=+((writeProg().cursor||{})[String(lv)]||0);
     const pos=at>0 && at<list.length ? at : 0;
+    if(lv===3){
+      const v=SYL_VOWELS[Math.floor(at/14)]||'ㅏ';
+      const name=sylName[v]||base[3];
+      const within=at%14;
+      e.textContent = within ? name+' · '+(within+1)+'번째부터' : name;
+      return;
+    }
     e.textContent = pos ? base[lv]+' · '+(pos+1)+'번째부터' : base[lv];
   });
 }
@@ -1664,24 +1661,55 @@ function makeItem(ch){
   if(chars.length>1 && chars.every(c=>!!splitSyl(c))) return {show:ch, say:ch, name:ch, emoji:WORD_EMOJI[ch]||'', cells:chars.map(cellForSyllable)};
   return null;
 }
+const SYL_VOWELS=['ㅏ','ㅑ','ㅓ','ㅕ','ㅗ','ㅛ','ㅜ','ㅠ','ㅡ','ㅣ'];
 function stageList(level){
   level=+level;
   if(level===1) return CONS.map(c=>c[0]);
   if(level===2) return VOWS10.map(v=>v[0]);
   if(level===3){
-    const vowels=['ㅏ','ㅑ','ㅓ','ㅕ','ㅗ','ㅛ','ㅜ','ㅠ','ㅡ','ㅣ'];
     const out=[];
-    vowels.forEach(v=>CONS.forEach(c=>out.push(compose(c[1], JUNG_OF[v]))));
+    SYL_VOWELS.forEach(v=>CONS.forEach(c=>out.push(compose(c[1], JUNG_OF[v]))));
     return out;
   }
   return WRITE_WORDS.map(w=>w[1]);
+}
+function roundSpan(level, index){
+  const list=stageList(level);
+  if(+level===3){
+    const g=Math.floor(index/14)*14;
+    return {start:g, end:Math.min(list.length, g+14)};
+  }
+  return {start:0, end:list.length};
 }
 function takeRound(level, from){
   const list=stageList(level);
   let i = from==null ? (+((writeProg().cursor||{})[String(level)]||0)) : from;
   if(!(i>=0) || i>=list.length) i=0;
-  const n=Math.min(7, list.length-i);
-  return {list:list.slice(i, i+n), start:i, total:list.length};
+  const span=roundSpan(level, i);
+  return {list:list.slice(span.start, span.end), start:span.start, q:i-span.start, total:list.length};
+}
+function saveWritePlace(){
+  if(W.finished || !W.list || !W.list.length) return;
+  const wp=writeProg();
+  const at=W.roundStart + (W.letterDone ? W.q+1 : W.q);
+  if(at<0 || at>stageList(W.level).length) return;
+  wp.cursor[W.key]=at>=stageList(W.level).length ? 0 : at;
+  saveProg();
+}
+function cheerHalfway(done){
+  W.cheered=true;
+  addStars(1);
+  const owned=new Set(myStickers);
+  const cand=STICKERS.filter(s=>!owned.has(s[0]));
+  const s=cand.length?rand(cand):rand(STICKERS);
+  if(cand.length){ myStickers.push(s[0]); saveProg(); }
+  $('stkTitle').textContent='반이나 했어요!';
+  const big=$('stkBig'); big.textContent=s[0]; big.style.animation='none'; void big.offsetWidth; big.style.animation='';
+  $('stkName').textContent=s[1];
+  $('stkOv').classList.add('on');
+  confetti(36); sfx.sparkle();
+  speak('반이나 했어요! 정말 멋져요!',{praise:true});
+  W.onCheer=done;
 }
 function hashParam(name){
   const h=location.hash.replace('#','').split(',');
@@ -1943,15 +1971,24 @@ function finishLetter(){
   if(letterClean){ W.correct++; W.earned++; addStars(1); setMsg(p+' ⭐'); confetti(26); sfx.sparkle(); }
   else { setMsg('잘했어!'); confetti(14); sfx.soft(); }
   W.phase='pause';
+  W.letterDone=true;
+  saveWritePlace();
   const tok=W.token, q=W.q;
-  setTimeout(()=>{ if(tok!==writeToken || W.q!==q) return; W.q++; nextItem(); }, WRITE_FAST?280:1650);
+  const half=Math.ceil((W.list.length||1)/2);
+  const cheer=!W.cheered && half>1 && (q+1)===half;
+  setTimeout(()=>{
+    if(tok!==writeToken || W.q!==q) return;
+    const go=()=>{ W.q++; W.letterDone=false; nextItem(); };
+    if(cheer) cheerHalfway(go);
+    else go();
+  }, WRITE_FAST?280:1650);
 }
 function sayHow(){
   if(!W.item || selfWrite()) return;
   speak(W.item.name+eunun(W.item.name)+' 이렇게 써요');
 }
 function beginItem(demo){
-  W.ink=[]; W.reject=null; W.ghost=null; W.misses=0; W.hinted=false; W.hintUntil=0; W.nudgeUntil=0; W.failSpoken=false;
+  W.ink=[]; W.reject=null; W.ghost=null; W.misses=0; W.hinted=false; W.hintUntil=0; W.nudgeUntil=0; W.failSpoken=false; W.letterDone=false;
   if(W.px && W.px.length) W.done=W.px.map(()=>false);
   if(typeof resetInks==='function') resetInks();
   syncAttemptChrome();
@@ -1979,6 +2016,13 @@ function nextItem(){
   W.attempt=1; W.attemptClean=[];
   $('hwNum').textContent=W.q+1;
   if($('hwTotal')) $('hwTotal').textContent=W.list.length;
+  const setEl=$('hwSet');
+  if(setEl){
+    if(W.level===3){
+      const v=SYL_VOWELS[Math.floor((W.roundStart+W.q)/14)]||'';
+      setEl.textContent=v ? v+' ' : '';
+    } else setEl.textContent='';
+  }
   $('hwHint').textContent=item.emoji || item.show;
   $('hwHint').style.fontSize = (!item.emoji && item.show.length>1) ? 'clamp(32px,6vmin,56px)' : '';
   $('hwText').innerHTML=item.name+eul(item.name)+' 써 봐요<small id="hwSub"></small>';
@@ -1992,11 +2036,12 @@ function nextItem(){
 }
 function writeFinish(){
   const total=W.list.length, c=W.correct, lv=W.level;
-  // 세 번을 마친 글자는 깨기에 포함된다. 힌트나 틀린 획이 많으면 별만 줄어든다.
+  // 한 모임을 끝까지 쓰면 다음으로 넘어간다. 별은 잘 쓴 비율로, 적어도 한 개.
   let r=ratingRatio(c, total);
   if(r<1) r=1;
   const cleared=true;
   W.more=false;
+  W.finished=true;
   if(cleared){
     const wp=writeProg();
     wp.best[W.key]=Math.max(wp.best[W.key]||0, r);
@@ -2022,12 +2067,14 @@ function startWrite(key, opt){
   W.level=+key||1;
   W.reps=Math.max(1, +hashParam('reps')||3);
   const only=hashParam('only');
+  let startQ=0;
   if(only){ W.list=[only]; W.roundStart=0; }
   else {
     const slice=takeRound(W.level, opt && opt.replay!=null ? opt.replay : null);
-    W.list=slice.list; W.roundStart=slice.start;
+    W.list=slice.list; W.roundStart=slice.start; startQ=slice.q||0;
   }
-  W.q=0; W.correct=0; W.earned=0; W.layoutTries=0; W.more=false;
+  W.q=startQ; W.correct=0; W.earned=0; W.layoutTries=0; W.more=false; W.finished=false; W.letterDone=false;
+  W.cheered=W.q>=Math.ceil((W.list.length||1)/2);
   if($('hwTotal')) $('hwTotal').textContent=W.list.length;
   $('startOv').classList.remove('on');
   show('write');
@@ -2137,7 +2184,7 @@ function markPrac(){
   const er=$('pracEraser'); if(er) er.classList.toggle('on', P.erase);
 }
 // ----- 획 모양 확인용 모눈 (#sheet) -----
-const SHEET_CHARS=['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ','ㅏ','ㅑ','ㅓ','ㅕ','ㅗ','ㅛ','ㅜ','ㅠ','ㅡ','ㅣ','가','나','다','마','아','하','고','구','거','기','노','소','어','허'];
+const SHEET_CHARS=['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ','ㅏ','ㅑ','ㅓ','ㅕ','ㅗ','ㅛ','ㅜ','ㅠ','ㅡ','ㅣ','가','나','다','라','마','바','사','아','자','차','카','타','파','하'];
 function startSheet(){
   stopWrite();
   W.sheet=true;
