@@ -93,6 +93,7 @@ self.addEventListener('fetch', e => {
   if (req.method !== 'GET') return;
   let url;
   try { url = new URL(req.url); } catch (err) { return; }
+  // 글꼴은 다른 주소다. 여기서 가로채지 않는다. 못 받아도 기기 글씨로 이어진다.
   if (url.origin !== location.origin) return;
   const key = req.mode === 'navigate' ? './index.html' : req;
   e.respondWith((async () => {
